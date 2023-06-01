@@ -87,7 +87,7 @@ Map MapLoader::parse_file() {
   std::ifstream file(this->filename);
   std::string line;
 
-  std::cout << "Parsing file " << this->filename << std::endl;
+  std::cout << "Sprawdzam plik mapy " << this->filename << std::endl;
 
   std::getline(file, line);
   std::stringstream ss(line);
@@ -98,9 +98,6 @@ Map MapLoader::parse_file() {
     std::getline(ss, substr, ',');
     dimensions.push_back(std::stoi(substr));
   }
-
-  std::cout << "Dimensions: " << dimensions[0] << ", " << dimensions[1] << ", "
-            << dimensions[2] << std::endl;
 
   std::vector<std::vector<std::vector<MapObject>>> map;
   for (int i = 0; i < dimensions[2]; i++) {
@@ -131,15 +128,7 @@ Map MapLoader::parse_file() {
       layer.push_back(row);
     }
 
-		std::cout << "This is the layer " << i << std::endl;
-    for (int j = 0; j < layer.size(); j++) {
-      for (int k = 0; k < layer[j].size(); k++) {
-				std::cout << layer[j][k] << " ";
-      }
-			std::cout << std::endl;
-    }
-
-    map.insert(map.begin(), layer);
+    map.push_back(layer);
   }
 
   file.close();

@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "MapLoader.h"
+#include <map>
 #include <optional>
 #include <string>
 #define GLM_FORCE_RADIANS
@@ -194,16 +195,14 @@ void drawScene(GLFWwindow *window) {
 
 int main(void) {
   MapLoader loader("example.map");
-  auto map = loader.load_map();
+	std::optional<Map> map = loader.load_map();
   if (!map.has_value()) {
     fprintf(stderr, "Nie można załadować mapy.\n");
     exit(EXIT_FAILURE);
   }
 
   std::cout << "Mapa załadowana poprawnie." << std::endl;
-  std::cout << map.value().pretty_print() << std::endl;
-
-  return 0;
+  std::cout << map->pretty_print() << std::endl;
 
   // Try to load
   GLFWwindow *window; // Wskaźnik na obiekt reprezentujący okno

@@ -8,17 +8,12 @@
 std::string Map::pretty_print() {
   std::stringstream ss;
 
-	std::cout << "jestme w prety print" << std::endl;
-	std::cout << internal_map.size() << std::endl;
-	std::cout << internal_map[0].size() << std::endl;
-	std::cout << internal_map[0][0].size() << std::endl;
-
   // Left to right, bottom to top
-  for (int layer = 0; layer < internal_map[0][0].size(); layer++) {
+  for (int layer = 0; layer < internal_map.size(); layer++) {
     ss << "The layer is " << layer << "\n";
-    for (int x = 0; x < internal_map[0].size(); x++) {
-      for (int y = 0; y < internal_map.size(); y++) {
-        switch (internal_map[x][y][layer]) {
+    for (int y = 0; y < internal_map[0].size(); y++) {
+      for (int x = 0; x < internal_map[0][0].size(); x++) {
+        switch (internal_map[layer][y][x]) {
         case MapObject::START_ALTAR:
           ss << "S";
           break;
@@ -29,11 +24,9 @@ std::string Map::pretty_print() {
           ss << "W";
           break;
         default:
-          ss << " ";
+          ss << "0";
           break;
         }
-
-        ss << internal_map[x][y][layer];
       }
       ss << "\n";
     }
