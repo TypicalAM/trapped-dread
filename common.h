@@ -1,6 +1,6 @@
 #pragma once
 
-// set up these constants 
+// set up these constants
 // encode movement using bit mask
 // 0b0000 0000
 // 0b0000 0001 - forward
@@ -14,8 +14,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <stdlib.h>
 
 #define MOVE_FORWARD 0x01
@@ -25,5 +25,3 @@
 #define MOVE_UP 0x10
 #define MOVE_DOWN 0x20
 #define MOVE_FLY 0x40
-
-
