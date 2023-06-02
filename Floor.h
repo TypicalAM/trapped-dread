@@ -7,11 +7,9 @@ class Floor : public CollidableObj {
 private:
   int width;
   int length;
-  std::pair<int, int> start_pos;
 
 public:
-  Floor(float floor_level, int width, int height,
-        std::pair<int, int> start_pos);
+  Floor(float floor_level, int width, int height);
   virtual ~Floor() {}
   void setFloorLevel(float newLevel) { m_position.y = newLevel; }
   float getFloorLevel() { return m_position.y; }

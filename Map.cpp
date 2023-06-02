@@ -46,7 +46,11 @@ std::pair<int, int> GameMap::get_end_position() { return end_position; }
 std::unique_ptr<Floor> GameMap::gen_floor() {
   int width = internal_map[0][0].size();
   int length = internal_map[0].size();
-  return std::make_unique<Floor>(0.4f, width, length, get_start_position());
+  return std::make_unique<Floor>(0.4f, width, length);
+}
+
+glm::vec3 GameMap::calc_player_start_pos() {
+  return glm::vec3(start_position.first, 0.f, start_position.second);
 }
 
 GameMap::GameMap(Map3D map) {

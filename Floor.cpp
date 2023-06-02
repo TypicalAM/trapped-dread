@@ -15,9 +15,8 @@ void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
 
   M2 = glm::scale(M2, glm::vec3(0.5f, 0.01f, 0.5f));
 
-  constexpr int range = 20;
-  for (int i = -range; i < range; i++) {
-    for (int j = -range; j < range; j++) {
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < length; j++) {
       glm::mat4 M3 = glm::translate(M2, glm::vec3(2 * i, 0, 2 * j));
 
       // rotate so it gets diffrent color
@@ -47,17 +46,9 @@ void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   }
 }
 
-Floor::Floor(float floor_level, int width, int length, std::pair<int, int> start_pos)
+Floor::Floor(float floor_level, int width, int length)
     : CollidableObj(glm::vec3(0, floor_level, 0), glm::vec3(0, 0, 0),
                     glm::vec3(0, 0, 0)) {
-
-	std::cout << "Floor constructor" << std::endl;
-	std::cout << "Floor level: " << floor_level << std::endl;
-	std::cout << "Width: " << width << std::endl;
-	std::cout << "Height: " << length << std::endl;
-	std::cout << "Start pos: " << start_pos.first << " " << start_pos.second << std::endl;
-
   this->width = width;
   this->length = length;
-	this->start_pos = start_pos;
 }

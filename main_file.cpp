@@ -209,16 +209,17 @@ int main(void) {
       INITAL_WIDTH, INITIAL_HEIGHT, "OpenGL", NULL,
       NULL); // Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
 
-  camera_ptr = new Player(INITAL_WIDTH, INITIAL_HEIGHT);
-  camera_ptr->moveCam(glm::vec3(0.f, 0.4f, 0.f));
-  camera_ptr->setFloorLevel(0.4f);
-
   if (!window) // Jeżeli okna nie udało się utworzyć, to zamknij program
   {
     fprintf(stderr, "Nie można utworzyć okna.\n");
     glfwTerminate();
     exit(EXIT_FAILURE);
   }
+
+  camera_ptr =
+      new Player(INITAL_WIDTH, INITIAL_HEIGHT, map->calc_player_start_pos());
+  camera_ptr->moveCam(glm::vec3(0.f, 0.4f, 0.f));
+  camera_ptr->setFloorLevel(0.4f);
 
   glfwMakeContextCurrent(
       window); // Od tego momentu kontekst okna staje się aktywny i polecenia

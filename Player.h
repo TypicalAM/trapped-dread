@@ -1,3 +1,4 @@
+#include <glm/fwd.hpp>
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_SWIZZLE
 
@@ -11,14 +12,13 @@
 #include <memory>
 #include <vector>
 
-#define INITIAL_CAM_POS glm::vec3(0.f, 0.f, -4.f)
 #define INITIAL_CAM_ANGLES glm::vec3(0.f, 90.f, 0.f)
 
 class Player {
 private:
   // consts
   float m_sensitivity = 0.1f;
-
+	glm::vec3 initial_cam_pos;
   glm::vec3 m_cam_pos;
   glm::vec3 m_euler_angles;
   float vertical_velocity = 0.0f;
@@ -36,8 +36,9 @@ private:
   glm::vec3 calc_forward();
 
 public:
-  Player(float screen_width, float screen_height) {
-    m_cam_pos = INITIAL_CAM_POS;
+  Player(float screen_width, float screen_height, glm::vec3 start_pos) {
+		initial_cam_pos = start_pos;
+    m_cam_pos = initial_cam_pos;
     m_euler_angles = INITIAL_CAM_ANGLES;
 
     std::cout << "called ctor\n";
@@ -83,7 +84,7 @@ public:
 
   void reset_cam() {
     m_euler_angles = INITIAL_CAM_ANGLES;
-    m_cam_pos = INITIAL_CAM_POS;
+    m_cam_pos = initial_cam_pos;
     m_cam_pos.y = base_floor_level;
   }
 

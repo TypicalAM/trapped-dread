@@ -2,6 +2,7 @@
 
 #include "Floor.h"
 #include <algorithm>
+#include <glm/fwd.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -32,4 +33,5 @@ public:
   std::pair<int, int> get_end_position();   // get the end position
   std::unique_ptr<Floor> gen_floor();       // generate a floor based on the map
   std::string pretty_print();               // pretty print the map
+  glm::vec3 calc_player_start_pos(); // calculate the player's start position
 };
