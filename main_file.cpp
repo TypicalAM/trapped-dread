@@ -150,20 +150,12 @@ void freeOpenGLProgram(GLFWwindow *window) {
 }
 
 // alters global `GameObjects`
-void setupInitialPositionsOfObjects() {
-  // floor
-  GameObjects.push_back(std::unique_ptr<Floor>(new Floor(0.4f)));
+void setupInitialPositionsOfObjects(GameMap &map) {
+  // GameObjects.push_back(std::unique_ptr<Floor>(new Floor(0.4f)));
+  GameObjects.push_back(map.gen_floor());
 
   GameObjects.push_back(std::unique_ptr<CollidableTeapot>(
       new CollidableTeapot(glm::vec3(0, 2.f, 0))));
-  /*GameObjects.push_back(
-          std::unique_ptr<CollidableTeapot>(
-                  new CollidableTeapot(glm::vec3(2, 0.4f, 0))
-  ));
-  GameObjects.push_back(
-          std::unique_ptr<CollidableTeapot>(
-                  new CollidableTeapot(glm::vec3(2, 0.4f, 2))
-  ));*/
 }
 
 // Procedura rysująca zawartość sceny

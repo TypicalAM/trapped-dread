@@ -1,6 +1,8 @@
 #include "Map.h"
+#include "Floor.h"
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -40,6 +42,12 @@ Map3D GameMap::get_map() { return internal_map; }
 std::pair<int, int> GameMap::get_start_position() { return start_position; }
 
 std::pair<int, int> GameMap::get_end_position() { return end_position; }
+
+std::unique_ptr<Floor> GameMap::gen_floor() {
+  int width = internal_map[0][0].size();
+  int length = internal_map[0].size();
+  return std::make_unique<Floor>(0.4f, width, length);
+}
 
 GameMap::GameMap(Map3D map) {
   internal_map = map;

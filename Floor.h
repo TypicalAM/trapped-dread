@@ -4,10 +4,12 @@
 #include "common.h"
 
 class Floor : public CollidableObj {
+private:
+  int width;
+  int length;
+
 public:
-  Floor(float floor_level)
-      : CollidableObj(glm::vec3(0, floor_level, 0), glm::vec3(0, 0, 0),
-                      glm::vec3(0, 0, 0)) {}
+  Floor(float floor_level, int width, int height);
   virtual ~Floor() {}
   void setFloorLevel(float newLevel) { m_position.y = newLevel; }
   float getFloorLevel() { return m_position.y; }

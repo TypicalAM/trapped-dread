@@ -45,3 +45,10 @@ void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
     }
   }
 }
+
+Floor::Floor(float floor_level, int width, int height)
+    : CollidableObj(glm::vec3(0, floor_level, 0), glm::vec3(0, 0, 0),
+                    glm::vec3(0, 0, 0)) {
+  this->width = width;
+  this->length = height;
+}
