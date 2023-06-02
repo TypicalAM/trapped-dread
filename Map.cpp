@@ -1,5 +1,7 @@
 #include "Map.h"
 #include "Floor.h"
+#include "Wall.h"
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -51,6 +53,22 @@ std::unique_ptr<Floor> GameMap::gen_floor() {
 
 glm::vec3 GameMap::calc_player_start_pos() {
   return glm::vec3(start_position.first, 0.f, start_position.second);
+}
+
+std::vector<std::unique_ptr<Wall>> GameMap::gen_walls() {
+  std::vector<std::unique_ptr<Wall>> walls;
+
+  for (int layer = 0; layer < internal_map.size(); layer++) {
+    for (int y = 0; y < internal_map[0].size(); y++) {
+      for (int x = 0; x < internal_map[0][0].size(); x++) {
+        if (internal_map[layer][y][x] == MapObject::WALL)
+          walls.push_back(std::make_unique<Wall>(x, y, layer));
+      }
+    }
+  }
+
+  std::cout << "Walls size: " << walls.size() << std::endl;
+  return walls;
 }
 
 GameMap::GameMap(Map3D map) {

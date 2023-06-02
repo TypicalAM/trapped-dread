@@ -18,7 +18,7 @@ class Player {
 private:
   // consts
   float m_sensitivity = 0.1f;
-	glm::vec3 initial_cam_pos;
+  glm::vec3 initial_cam_pos;
   glm::vec3 m_cam_pos;
   glm::vec3 m_euler_angles;
   float vertical_velocity = 0.0f;
@@ -37,7 +37,7 @@ private:
 
 public:
   Player(float screen_width, float screen_height, glm::vec3 start_pos) {
-		initial_cam_pos = start_pos;
+    initial_cam_pos = start_pos;
     m_cam_pos = initial_cam_pos;
     m_euler_angles = INITIAL_CAM_ANGLES;
 

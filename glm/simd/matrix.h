@@ -414,13 +414,13 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_mat4_determinant_lowp(glm_vec4 const m[4]) {
 
   // vec<4, T, Q> DetCof(
   //	+ (m[1][1] * SubFactor00 - m[1][2] * SubFactor01 + m[1][3] *
-  //SubFactor02),
+  // SubFactor02),
   //	- (m[1][0] * SubFactor00 - m[1][2] * SubFactor03 + m[1][3] *
-  //SubFactor04),
+  // SubFactor04),
   //	+ (m[1][0] * SubFactor01 - m[1][1] * SubFactor03 + m[1][3] *
-  //SubFactor05),
+  // SubFactor05),
   //	- (m[1][0] * SubFactor02 - m[1][1] * SubFactor04 + m[1][2] *
-  //SubFactor05));
+  // SubFactor05));
 
   __m128 SubFacA = _mm_castsi128_ps(
       _mm_shuffle_epi32(_mm_castps_si128(SubE), _MM_SHUFFLE(2, 1, 0, 0)));
@@ -487,13 +487,13 @@ GLM_FUNC_QUALIFIER glm_vec4 glm_mat4_determinant(glm_vec4 const m[4]) {
 
   // vec<4, T, Q> DetCof(
   //	+ (m[1][1] * SubFactor00 - m[1][2] * SubFactor01 + m[1][3] *
-  //SubFactor02),
+  // SubFactor02),
   //	- (m[1][0] * SubFactor00 - m[1][2] * SubFactor03 + m[1][3] *
-  //SubFactor04),
+  // SubFactor04),
   //	+ (m[1][0] * SubFactor01 - m[1][1] * SubFactor03 + m[1][3] *
-  //SubFactor05),
+  // SubFactor05),
   //	- (m[1][0] * SubFactor02 - m[1][1] * SubFactor04 + m[1][2] *
-  //SubFactor05));
+  // SubFactor05));
 
   __m128 SubFacA = _mm_shuffle_ps(SubE, SubE, _MM_SHUFFLE(2, 1, 0, 0));
   __m128 SwpFacA = _mm_shuffle_ps(m[1], m[1], _MM_SHUFFLE(0, 0, 0, 1));
