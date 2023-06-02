@@ -1,5 +1,6 @@
 #include "Floor.h"
 #include "myCube.h"
+#include <iostream>
 
 std::array<std::pair<bool, bool>, 3>
 Floor::calc_colision(const glm::vec3 &other_pos) {
@@ -46,9 +47,17 @@ void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   }
 }
 
-Floor::Floor(float floor_level, int width, int height)
+Floor::Floor(float floor_level, int width, int length, std::pair<int, int> start_pos)
     : CollidableObj(glm::vec3(0, floor_level, 0), glm::vec3(0, 0, 0),
                     glm::vec3(0, 0, 0)) {
+
+	std::cout << "Floor constructor" << std::endl;
+	std::cout << "Floor level: " << floor_level << std::endl;
+	std::cout << "Width: " << width << std::endl;
+	std::cout << "Height: " << length << std::endl;
+	std::cout << "Start pos: " << start_pos.first << " " << start_pos.second << std::endl;
+
   this->width = width;
-  this->length = height;
+  this->length = length;
+	this->start_pos = start_pos;
 }

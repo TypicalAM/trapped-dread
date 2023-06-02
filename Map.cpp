@@ -46,22 +46,22 @@ std::pair<int, int> GameMap::get_end_position() { return end_position; }
 std::unique_ptr<Floor> GameMap::gen_floor() {
   int width = internal_map[0][0].size();
   int length = internal_map[0].size();
-  return std::make_unique<Floor>(0.4f, width, length);
+  return std::make_unique<Floor>(0.4f, width, length, get_start_position());
 }
 
 GameMap::GameMap(Map3D map) {
   internal_map = map;
-  for (int i = 0; i < map.size(); i++) {
-    for (int j = 0; j < map[i].size(); j++) {
-      for (int k = 0; k < map[i][j].size(); k++) {
-        if (map[i][j][k] == MapObject::START_ALTAR) {
-          this->start_position = std::make_pair(i, j);
-        } else if (map[i][j][k] == MapObject::END_ALTAR) {
-          this->end_position = std::make_pair(i, j);
+  for (int layer = 0; layer < map.size(); layer++) {
+    for (int y = 0; y < map[0].size(); y++) {
+      for (int x = 0; x < map[0][0].size(); x++) {
+        if (map[layer][y][x] == MapObject::START_ALTAR) {
+          start_position = std::make_pair(x, y);
+        } else if (map[layer][y][x] == MapObject::END_ALTAR) {
+          end_position = std::make_pair(x, y);
         }
       }
     }
   }
 
-  layers = map[0][0].size();
+  layers = map.size();
 }
