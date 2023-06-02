@@ -1,30 +1,35 @@
 #pragma once
 
+#include "Floor.h"
+#include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 
 // MapObject is a enum class that represents a type of object on the map
 enum MapObject {
-	EMPTY,
+  EMPTY,
   WALL,
   START_ALTAR,
   END_ALTAR,
 };
 
-// Map is a class that represents a map
-class Map {
+// Map3D is a type representing a 3d vector of map objects
+using Map3D = std::vector<std::vector<std::vector<MapObject>>>;
+
+// GameMap is a class that represents a map
+class GameMap {
 private:
-  std::vector<std::vector<std::vector<MapObject>>>
-      internal_map;                   // 3d vector of map objects
+  Map3D internal_map;                 // 3d vector of map objects
   std::pair<int, int> start_position; // start position
   std::pair<int, int> end_position;   // end position
-  int layers;
+  int layers; // how many layers the map has (how many floors there are)
 
 public:
-  Map(std::vector<std::vector<std::vector<MapObject>>> map);
-  std::string pretty_print();
-  std::vector<std::vector<std::vector<MapObject>>>
-  get_map();                                // get the 3d vector of map objects
+  GameMap(Map3D map);
+  Map3D get_map();                          // get the 3d vector of map objects
   std::pair<int, int> get_start_position(); // get the start position
   std::pair<int, int> get_end_position();   // get the end position
+  std::unique_ptr<Floor> gen_floor();       // generate a floor based on the map
+  std::string pretty_print();               // pretty print the map
 };

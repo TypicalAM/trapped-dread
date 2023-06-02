@@ -12,9 +12,9 @@ private:
   std::string filename;
   bool file_accessible(); // Check if the file is accessible and readable
   bool file_correct();    // Check if the file really is a map
-  Map parse_file();       // Load the map from the file
+  GameMap parse_file();       // Load the map from the file
 
 public:
   MapLoader(std::string filename);
-  std::optional<Map> load_map(); // Load the map from the file
+  std::optional<GameMap> load_map(); // Load the map from the file
 };

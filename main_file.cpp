@@ -194,8 +194,7 @@ void drawScene(GLFWwindow *window) {
 }
 
 int main(void) {
-  MapLoader loader("example.map");
-	std::optional<Map> map = loader.load_map();
+  auto map = (new MapLoader("example.map"))->load_map();
   if (!map.has_value()) {
     fprintf(stderr, "Nie można załadować mapy.\n");
     exit(EXIT_FAILURE);
@@ -242,7 +241,7 @@ int main(void) {
 
   initOpenGLProgram(window); // Operacje inicjujące
 
-  setupInitialPositionsOfObjects();
+  setupInitialPositionsOfObjects(map.value());
 
   // Główna pętla
   glfwSetTime(0); // Zeruj timer

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-std::string Map::pretty_print() {
+std::string GameMap::pretty_print() {
   std::stringstream ss;
 
   // Left to right, bottom to top
@@ -30,21 +30,18 @@ std::string Map::pretty_print() {
       }
       ss << "\n";
     }
-    ss << "\n";
   }
 
   return ss.str();
 }
 
-std::vector<std::vector<std::vector<MapObject>>> Map::get_map() {
-  return internal_map;
-}
+Map3D GameMap::get_map() { return internal_map; }
 
-std::pair<int, int> Map::get_start_position() { return start_position; }
+std::pair<int, int> GameMap::get_start_position() { return start_position; }
 
-std::pair<int, int> Map::get_end_position() { return end_position; }
+std::pair<int, int> GameMap::get_end_position() { return end_position; }
 
-Map::Map(std::vector<std::vector<std::vector<MapObject>>> map) {
+GameMap::GameMap(Map3D map) {
   internal_map = map;
   for (int i = 0; i < map.size(); i++) {
     for (int j = 0; j < map[i].size(); j++) {

@@ -83,7 +83,7 @@ bool MapLoader::file_correct() {
 }
 
 // Parse the file and load the map
-Map MapLoader::parse_file() {
+GameMap MapLoader::parse_file() {
   std::ifstream file(this->filename);
   std::string line;
 
@@ -99,7 +99,7 @@ Map MapLoader::parse_file() {
     dimensions.push_back(std::stoi(substr));
   }
 
-  std::vector<std::vector<std::vector<MapObject>>> map;
+  Map3D map;
   for (int i = 0; i < dimensions[2]; i++) {
     std::getline(file, line);
     std::vector<std::vector<MapObject>> layer;
@@ -132,10 +132,10 @@ Map MapLoader::parse_file() {
   }
 
   file.close();
-  return Map(map);
+  return GameMap(map);
 }
 
-std::optional<Map> MapLoader::load_map() {
+std::optional<GameMap> MapLoader::load_map() {
   if (file_accessible() && file_correct())
     return parse_file();
 
