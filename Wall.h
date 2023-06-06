@@ -12,7 +12,6 @@ private:
 public:
   Wall(int x_pos, int y_pos, int layer);
   virtual ~Wall() {}
-  virtual std::array<std::pair<bool, bool>, 3>
-  calc_colision(const glm::vec3 &other_pos) override;
+  virtual Collisions calc_colision(const glm::vec3 &other_pos) override;
   virtual void draw(const glm::mat4 &baseM, ShaderProgram *sp) override;
 };

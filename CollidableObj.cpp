@@ -14,11 +14,10 @@ glm::mat4 CollidableObj::calc_base_M(const glm::mat4 &baseM) {
   return newM;
 }
 
-std::array<std::pair<bool, bool>, 3>
-CollidableObj::calc_colision(const glm::vec3 &other_pos) {
-  std::array<std::pair<bool, bool>, 3> collision_array{
-      std::pair<bool, bool>{false, false}, std::pair<bool, bool>{false, false},
-      std::pair<bool, bool>{false, false}};
+Collisions CollidableObj::calc_colision(const glm::vec3 &other_pos) {
+  Collisions collision_array{std::pair<bool, bool>{false, false},
+                             std::pair<bool, bool>{false, false},
+                             std::pair<bool, bool>{false, false}};
   glm::vec3 diff = m_position - other_pos;
 
   // check we are colliding with the box

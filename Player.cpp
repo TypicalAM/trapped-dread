@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "CollidableObj.h"
 #include "common.h"
 
 #include <iostream>
@@ -97,38 +98,39 @@ void Player::update(
   update_cam_pos(fw_diff, right_diff, 0);
   m_cam_pos.y += vertical_velocity * timeDelta;
 
+  std::cout << "\n\n\n\n\nStart collision check" << std::endl;
+
   for (auto &other_obj : other_objs) {
+    Collisions cols = other_obj->calc_colision(m_cam_pos);
 
-    std::cout << "other object type: " << typeid(*other_obj).name()
-              << std::endl;
+    std::cout << typeid(*other_obj).name() << "  " << cols[0].first << " "
+              << cols[0].second << " " << cols[1].first << " " << cols[1].second
+              << " " << cols[2].first << " " << cols[2].second << std::endl;
 
-    std::array<std::pair<bool, bool>, 3> collisions =
-        other_obj->calc_colision(m_cam_pos);
+    // Let's check if we are 'inside the object' without considering the Y-level
+    if (cols[0].first && cols[0].second && cols[2].first && cols[2].second) {
+      std::cout << "Inside!" << std::endl;
 
-    if (collisions[0].first || collisions[0].second) {
-      std::cout << "collision detected X" << std::endl;
+      // Now if we are on top of the object, everything is all right
+      if (cols[1].first && cols[1].second) {
+        std::cout << "On top!" << std::endl;
+        m_cam_pos.y = old_cam_pos.y + 0.02f;
+        vertical_velocity = 0.0f;
+        is_on_floor = true;
+        return;
+      }
+
+      // If we are bonking our head, we need to reverse the vertical velocity
+      if (cols[1].second) {
+        std::cout << "Bonked head!" << std::endl;
+        m_cam_pos.y = old_cam_pos.y;
+        vertical_velocity *= -1;
+        return;
+      }
+
+      // Otherwise, we are inside the object, so we need to move out of it
+      std::cout << "Fuck you, can't move!" << std::endl;
       m_cam_pos.x = old_cam_pos.x;
-    }
-
-    // hit the floor
-    if (collisions[1].first) {
-      std::cout << "collision detected Y floor" << std::endl;
-      m_cam_pos.y = old_cam_pos.y;
-      vertical_velocity = 0.0f;
-      is_on_floor = true;
-    }
-
-    // hit the roof
-    if (collisions[1].second) {
-      std::cout << "collision detected Y ceiling" << std::endl;
-
-      // detect this as allowing for jump
-      m_cam_pos.y = old_cam_pos.y;
-      vertical_velocity *= -1;
-    }
-
-    if (collisions[2].first || collisions[2].second) {
-      std::cout << "collision detected Z" << std::endl;
       m_cam_pos.z = old_cam_pos.z;
     }
   }

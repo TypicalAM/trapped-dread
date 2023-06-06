@@ -1,13 +1,25 @@
 #include "Floor.h"
+#include "CollidableObj.h"
 #include "myCube.h"
+#include <array>
 #include <iostream>
+#include <vector>
 
-std::array<std::pair<bool, bool>, 3>
-Floor::calc_colision(const glm::vec3 &other_pos) {
-  return std::array<std::pair<bool, bool>, 3>{
-      std::pair<bool, bool>{false, false},
-      std::pair<bool, bool>{other_pos.y <= m_position.y, false},
-      std::pair<bool, bool>{false, false}};
+Collisions Floor::calc_colision(const glm::vec3 &other_pos) {
+  std::cout << "other_pos.y: " << other_pos.y << std::endl;
+  std::cout << "m_position.y: " << m_position.y << std::endl;
+
+  float inside_pos = other_pos.y - m_position.y;
+
+  std::cout << "inside_pos" << inside_pos << std::endl;
+
+  bool inside = other_pos.y < m_position.y + 0.02f;
+
+  std::cout << "inside: " << inside << std::endl;
+
+  return Collisions{std::pair<bool, bool>{true, true},
+                    std::pair<bool, bool>{0.02f >= inside_pos, inside},
+                    std::pair<bool, bool>{true, true}};
 }
 
 void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {

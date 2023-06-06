@@ -25,7 +25,6 @@
 #include "Player.h"
 #include "common.h"
 
-#include "CollidableTeapot.h"
 #include "Floor.h"
 
 float speed_forward = 0;
@@ -157,8 +156,9 @@ void setupInitialPositionsOfObjects(GameMap &map) {
   for (auto &wall : map.gen_walls())
     GameObjects.push_back(std::move(wall));
 
-  GameObjects.push_back(std::unique_ptr<CollidableTeapot>(
-      new CollidableTeapot(glm::vec3(0, 2.f, 0))));
+  // GameObjects.push_back(std::unique_ptr<CollidableTeapot>(
+  //    new CollidableTeapot(glm::vec3(0, 2.f, 0))));
+  //
 }
 
 // Procedura rysująca zawartość sceny
