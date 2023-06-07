@@ -86,6 +86,7 @@ public:
     m_euler_angles = INITIAL_CAM_ANGLES;
     m_cam_pos = initial_cam_pos;
     m_cam_pos.y = base_floor_level;
+    vertical_velocity = 0.0f;
   }
 
   void update(double timeDelta, int movement_mask, float speed,

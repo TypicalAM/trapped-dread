@@ -84,7 +84,7 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
     if (key == GLFW_KEY_KP_SUBTRACT)
       camera_ptr->inc_yaw(); // toggle ala noclip
     if (key == GLFW_KEY_0)
-      camera_ptr->reset_cam(); // toggle ala noclip
+      camera_ptr->reset_cam();// toggle ala noclip
   }
 
   if (action == GLFW_RELEASE) {

@@ -23,6 +23,8 @@
     <ClInclude Include="CollidableTeapot.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="lodepng.h" />
@@ -30,18 +32,23 @@
     <ClInclude Include="shaderprogram.h" />
     <ClInclude Include="myCube.h" />
     <ClInclude Include="myTeapot.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollidableObj.cpp" />
     <ClCompile Include="CollidableTeapot.cpp" />
     <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main_file.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="teapotAndCube.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="example.map" />
     <None Include="f_simplest.glsl" />
     <None Include="v_simplest.glsl" />
   </ItemGroup>
@@ -139,6 +146,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>glew\include;glfw\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

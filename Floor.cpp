@@ -5,22 +5,7 @@
 #include <iostream>
 #include <vector>
 
-Collisions Floor::calc_colision(const glm::vec3 &other_pos) {
-  std::cout << "other_pos.y: " << other_pos.y << std::endl;
-  std::cout << "m_position.y: " << m_position.y << std::endl;
 
-  float inside_pos = other_pos.y - m_position.y;
-
-  std::cout << "inside_pos" << inside_pos << std::endl;
-
-  bool inside = other_pos.y < m_position.y + 0.02f;
-
-  std::cout << "inside: " << inside << std::endl;
-
-  return Collisions{std::pair<bool, bool>{true, true},
-                    std::pair<bool, bool>{0.02f >= inside_pos, inside},
-                    std::pair<bool, bool>{true, true}};
-}
 
 void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2{baseM};
@@ -56,6 +41,23 @@ void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
           sp->a("color")); // Wy³¹cz przesy³anie danych do atrybutu vertex
     }
   }
+}
+
+bool Floor::hasColided(const glm::vec3& other_pos)
+{
+    float diff = other_pos.y - m_position.y;
+    if (diff < 0) {
+		return true;
+	}
+    return false;
+}
+
+glm::vec3 Floor::modify_cam_pos(const glm::vec3& old_cam_pos, const glm::vec3& new_cam_pos)
+{
+    // set y on NEW position to floor level
+    auto pos = new_cam_pos;
+    pos.y = m_position.y ;
+    return pos;
 }
 
 Floor::Floor(float floor_level, int width, int length)

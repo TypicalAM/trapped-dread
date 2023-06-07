@@ -17,6 +17,7 @@ jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
 Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 */
 
+#define _CRT_SECURE_NO_WARNINGS
 #include "shaderprogram.h"
 
 // Procedura wczytuje plik do tablicy znaków.

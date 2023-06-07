@@ -100,7 +100,30 @@ void Player::update(
 
   std::cout << "\n\n\n\n\nStart collision check" << std::endl;
 
+
+  is_on_floor = false;
   for (auto &other_obj : other_objs) {
+    if (other_obj->hasColided(m_cam_pos)) {
+        std::cout << "\t\tinside " << typeid(*other_obj).name() << std::endl;
+
+        auto updated_pos = other_obj->modify_cam_pos(old_cam_pos, m_cam_pos);
+        auto diff = updated_pos - m_cam_pos;
+        
+        if (diff.y >= 0) {
+            vertical_velocity = 0.0f;
+            is_on_floor = true;
+        }
+        else {
+            // head bump
+            
+
+            vertical_velocity *= -1;
+        }
+
+
+        m_cam_pos = updated_pos;
+    }
+    /*
     Collisions cols = other_obj->calc_colision(m_cam_pos);
 
     std::cout << typeid(*other_obj).name() << "  " << cols[0].first << " "
@@ -109,30 +132,32 @@ void Player::update(
 
     // Let's check if we are 'inside the object' without considering the Y-level
     if (cols[0].first && cols[0].second && cols[2].first && cols[2].second) {
-      std::cout << "Inside!" << std::endl;
+      std::cout << "Inside XZ boundry!" << std::endl;
 
       // Now if we are on top of the object, everything is all right
       if (cols[1].first && cols[1].second) {
         std::cout << "On top!" << std::endl;
-        m_cam_pos.y = old_cam_pos.y + 0.02f;
+        m_cam_pos.y = old_cam_pos.y;
         vertical_velocity = 0.0f;
         is_on_floor = true;
-        return;
+        continue;
       }
 
       // If we are bonking our head, we need to reverse the vertical velocity
-      if (cols[1].second) {
+      else if (!cols[1].first && cols[1].second) {
         std::cout << "Bonked head!" << std::endl;
         m_cam_pos.y = old_cam_pos.y;
         vertical_velocity *= -1;
-        return;
+        continue;
       }
+
 
       // Otherwise, we are inside the object, so we need to move out of it
       std::cout << "Fuck you, can't move!" << std::endl;
       m_cam_pos.x = old_cam_pos.x;
       m_cam_pos.z = old_cam_pos.z;
     }
+    */
   }
 }
 
