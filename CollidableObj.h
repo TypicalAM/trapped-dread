@@ -2,7 +2,7 @@
 #include "common.h"
 #include "shaderprogram.h"
 #include <array>
-
+#include <iostream>
 
 // pure virtual class for objects that support collisions
 class CollidableObj {
@@ -13,7 +13,7 @@ protected:
                                    // `prostopad³oœcian`
 
   // priatve helper functions for aabb collision algo
-  float slab_intersetion( const glm::vec3 rayStart, const glm::vec3& rayDir) const;
+  std::pair<float, int> slab_intersetion( const glm::vec3 rayStart, const glm::vec3& rayDir) const;
   virtual glm::vec3 aabbMin() const { return m_position - m_bounding_box_radius; }
   virtual glm::vec3 aabbMax() const { return m_position + m_bounding_box_radius; }
 
@@ -34,5 +34,9 @@ public:
 
   // returns new camera position after collision
   virtual glm::vec3 modify_cam_pos(const glm::vec3 & old_cam_pos, const glm::vec3& new_cam_pos );
+
+  void debug_pos_print() {
+        std::cout << "pos: " << m_position.x << " " << m_position.y << " " << m_position.z << std::endl;
+  }
 
 };

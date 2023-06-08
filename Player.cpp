@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "CollidableObj.h"
+#include "Wall.h"
 #include "common.h"
 
 #include <iostream>
@@ -103,6 +104,8 @@ void Player::update(
 
   is_on_floor = false;
   for (auto &other_obj : other_objs) {
+   
+
     if (other_obj->hasColided(m_cam_pos)) {
         std::cout << "\t\tinside " << typeid(*other_obj).name() << std::endl;
 
@@ -115,8 +118,6 @@ void Player::update(
         }
         else {
             // head bump
-            
-
             vertical_velocity *= -1;
         }
 

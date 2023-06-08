@@ -5,10 +5,11 @@
 #include <iostream>
 
 #define WALL_SCALER glm::vec3(0.5f, 0.5f, 0.5f)
+#define CUBE_OFSET_Y 0.51F
 
 void Wall::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
-  glm::mat4 M2 = glm::scale(baseM, WALL_SCALER);
-  glm::mat4 M3 = glm::translate(M2, m_position);
+  glm::mat4 M2 = glm::translate(baseM, m_position);
+  glm::mat4 M3 = glm::scale(M2, WALL_SCALER);
 
   glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M3));
   glEnableVertexAttribArray(sp->a("vertex"));
@@ -37,5 +38,5 @@ Wall::Wall(int x_pos, int y_pos, int layer)
   this->x_pos = x_pos;
   this->y_pos = y_pos;
   this->layer = layer;
-  this->m_position = glm::vec3(2 * x_pos, 1.02f + 2 * layer, y_pos * 2);
+  this->m_position = glm::vec3(x_pos, layer + CUBE_OFSET_Y, y_pos);
 }

@@ -26,7 +26,7 @@ bool CollidableObj::hasColided(const glm::vec3& other_pos)
 }
 
 
-float CollidableObj::slab_intersetion(const glm::vec3 rayStart, const glm::vec3& rayDir) const {
+std::pair<float, int> CollidableObj::slab_intersetion(const glm::vec3 rayStart, const glm::vec3& rayDir) const {
 	// algo z wyk³adu
 
 
@@ -36,11 +36,12 @@ float CollidableObj::slab_intersetion(const glm::vec3 rayStart, const glm::vec3&
 	float tnear = -FLT_MAX;
 	float tfar = FLT_MAX;
 	float t1, t2;
+	int axis = 0;
 	for (int i = 0; i < 3; i++) {
 		if (rayDir[i] == 0) {
             if (rayStart[i] < low[i] || rayStart[i] > high[i])
                 // not inside the slab
-                return 0;
+				return { 0, axis };
 		}
 		t1 = (low[i] - rayStart[i]) / rayDir[i];
 		t2 = (high[i] - rayStart[i]) / rayDir[i];
@@ -49,29 +50,41 @@ float CollidableObj::slab_intersetion(const glm::vec3 rayStart, const glm::vec3&
 		}
 		if (t1 > tnear) {
 			tnear = t1;
+			axis = i;
 		}
 		if (t2 < tfar) {
 			tfar = t2;
 		}
         // promien poza pud³em
         if (tnear > tfar || tfar < 0) {
-			return 0;
+			return { 0, axis };
 		}
 
 	}
-	return tnear;
+	return { tnear, axis };
 }
 
 
 glm::vec3 CollidableObj::modify_cam_pos(const glm::vec3& old_cam_pos, const glm::vec3& new_cam_pos)
 {
+	
+	constexpr float epsilon = 0.001;
     auto ray = new_cam_pos - old_cam_pos;
-    float t = slab_intersetion(old_cam_pos, ray);
+	auto x = slab_intersetion(old_cam_pos, ray);
+	float t = x.first;
+	int axis = x.second;
 
+	// intersect point
+	glm::vec3 updated_cam_pos = old_cam_pos + ray * (t - epsilon);
+   
+	// only modify the axis that we hit
+	glm::vec3 ret = new_cam_pos;
+	ret[axis] = updated_cam_pos[axis];
 
+    return ret;
 
-    constexpr float epsilon = 0.0001;
-    return old_cam_pos + ray * (t - epsilon);
+	// TODO: wydaje mi sie ze to jest git rozwi¹zanie kiedy mamy kolizje na Y, bo nas nie zwalnia
+	// a jak jest XZ to chyba return updated_cam_pos, ale nie sprawdza³em
 }
 
 
