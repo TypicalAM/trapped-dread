@@ -67,25 +67,27 @@ std::pair<float, int> CollidableObj::slab_intersetion(const glm::vec3 rayStart, 
 
 glm::vec3 CollidableObj::modify_cam_pos(const glm::vec3& old_cam_pos, const glm::vec3& new_cam_pos)
 {
-	
+
 	constexpr float epsilon = 0.001;
-    auto ray = new_cam_pos - old_cam_pos;
+	auto ray = new_cam_pos - old_cam_pos;
 	auto x = slab_intersetion(old_cam_pos, ray);
 	float t = x.first;
 	int axis = x.second;
 
 	// intersect point
 	glm::vec3 updated_cam_pos = old_cam_pos + ray * (t - epsilon);
-   
-	// only modify the axis that we hit
+
+	// colision with X or Z axis
+	if (axis != 1) {
+		return updated_cam_pos;
+	}
+
+	// only modify the Y axis
 	glm::vec3 ret = new_cam_pos;
 	ret[axis] = updated_cam_pos[axis];
 
-    return ret;
+	return ret;
 
-	// TODO: wydaje mi sie ze to jest git rozwi¹zanie kiedy mamy kolizje na Y, bo nas nie zwalnia
-	// a jak jest XZ to chyba return updated_cam_pos, ale nie sprawdza³em
 }
-
 
 
