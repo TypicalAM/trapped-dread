@@ -1,11 +1,9 @@
 #include "CollidableTeapot.h"
 #include <iostream>
 
-
 void CollidableTeapot::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
-  
+
   glm::mat4 M = glm::translate(baseM, m_position);
-    
 
   glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
 

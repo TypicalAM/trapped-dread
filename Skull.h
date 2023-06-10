@@ -3,13 +3,13 @@
 #include "CollidableObj.h"
 #include <glm/fwd.hpp>
 
-enum AltarType { START, END };
-enum AltarColor { BLUE_ALTAR, RED_ALTAR };
+enum SkullColor { BLUE_SKULL, RED_SKULL };
 
-class Altar : public CollidableObj {
+class Skull : public CollidableObj {
 private:
-  AltarType type;
-  AltarColor color;
+  int x_pos;
+  int y_pos;
+  SkullColor color;
 
   float *verticesArray;
   float *normalsArray;
@@ -17,8 +17,8 @@ private:
   size_t numVertices;
 
 public:
-  Altar(int x_pos, int y_pos, AltarType type, AltarColor color);
-  virtual ~Altar() {}
+  Skull(int x_pos, int y_pos, SkullColor color);
+  virtual ~Skull() {}
   virtual void draw(const glm::mat4 &baseM, ShaderProgram *sp) override;
   bool hasColided(const glm::vec3 &other_pos) override;
 };

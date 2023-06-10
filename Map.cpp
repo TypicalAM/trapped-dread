@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "Altar.h"
 #include "Floor.h"
+#include "Skull.h"
 #include "Wall.h"
 #include <algorithm>
 #include <cstdio>
@@ -78,25 +79,31 @@ std::vector<std::unique_ptr<Wall>> GameMap::gen_walls() {
   return walls;
 }
 
-std::vector<std::unique_ptr<Altar>> GameMap::gen_altars() {
-  std::vector<std::unique_ptr<Altar>> altars;
-
-  std::cout << "penis pl\n";
+std::vector<std::unique_ptr<CollidableObj>> GameMap::gen_altars() {
+  std::vector<std::unique_ptr<CollidableObj>> altars;
 
   for (int y = 0; y < internal_map[0].size(); y++) {
     for (int x = 0; x < internal_map[0][0].size(); x++) {
-      if (internal_map[0][y][x] == MapObject::START_BLUE_ALTAR)
-        altars.push_back(std::make_unique<Altar>(x, y, START, BLUE));
-      else if (internal_map[0][y][x] == MapObject::END_BLUE_ALTAR)
-        altars.push_back(std::make_unique<Altar>(x, y, END, BLUE));
-      else if (internal_map[0][y][x] == MapObject::START_RED_ALTAR)
-        altars.push_back(std::make_unique<Altar>(x, y, START, RED));
-      else if (internal_map[0][y][x] == MapObject::END_RED_ALTAR)
-        altars.push_back(std::make_unique<Altar>(x, y, END, RED));
+      switch (internal_map[0][y][x]) {
+      case MapObject::START_BLUE_ALTAR:
+        altars.push_back(std::make_unique<Altar>(x, y, START, BLUE_ALTAR));
+        altars.push_back(std::make_unique<Skull>(x, y, BLUE_SKULL));
+        break;
+      case MapObject::END_BLUE_ALTAR:
+        altars.push_back(std::make_unique<Altar>(x, y, END, BLUE_ALTAR));
+        break;
+      case MapObject::START_RED_ALTAR:
+        altars.push_back(std::make_unique<Altar>(x, y, START, RED_ALTAR));
+        altars.push_back(std::make_unique<Skull>(x, y, RED_SKULL));
+        break;
+      case MapObject::END_RED_ALTAR:
+        altars.push_back(std::make_unique<Altar>(x, y, END, RED_ALTAR));
+        break;
+      default:
+        break;
+      }
     }
   }
-
-  std::cout << "juz nie\n";
 
   std::cout << "Altars size: " << altars.size() << std::endl;
   return altars;

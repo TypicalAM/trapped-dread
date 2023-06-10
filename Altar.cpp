@@ -4,8 +4,8 @@
 #include "myCube.h"
 #include <iostream>
 
-#define ALTAR_SCALAR glm::vec3(0.5f, 0.5f, 0.5f)
-#define ALTAR_OFFSET_Y 0.51F
+#define ALTAR_SCALAR glm::vec3(0.1f, 0.1f, 0.1f)
+#define ALTAR_OFFSET_Y -0.2F
 
 void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
@@ -28,12 +28,10 @@ bool Altar::hasColided(const glm::vec3 &other_pos) {
          diff.z <= m_bounding_box_radius.z;
 }
 
-Altar ::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
+Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
                     glm::vec3(1, 1, 1)) {
-  this->x_pos = x_pos;
-  this->y_pos = y_pos;
-  this->m_position = glm::vec3(x_pos, ALTAR_OFFSET_Y, y_pos);
+  this->m_position = glm::vec3(x_pos + -0.1f, ALTAR_OFFSET_Y, y_pos);
   this->type = type;
   this->color = color;
 

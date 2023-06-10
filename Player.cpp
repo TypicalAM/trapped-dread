@@ -101,28 +101,24 @@ void Player::update(
 
   std::cout << "\n\n\n\n\nStart collision check" << std::endl;
 
-
   is_on_floor = false;
   for (auto &other_obj : other_objs) {
-   
 
     if (other_obj->hasColided(m_cam_pos)) {
-        std::cout << "\t\tinside " << typeid(*other_obj).name() << std::endl;
+      std::cout << "\t\tinside " << typeid(*other_obj).name() << std::endl;
 
-        auto updated_pos = other_obj->modify_cam_pos(old_cam_pos, m_cam_pos);
-        auto diff = updated_pos - m_cam_pos;
-        
-        if (diff.y >= 0) {
-            vertical_velocity = 0.0f;
-            is_on_floor = true;
-        }
-        else {
-            // head bump
-            vertical_velocity *= -1;
-        }
+      auto updated_pos = other_obj->modify_cam_pos(old_cam_pos, m_cam_pos);
+      auto diff = updated_pos - m_cam_pos;
 
+      if (diff.y >= 0) {
+        vertical_velocity = 0.0f;
+        is_on_floor = true;
+      } else {
+        // head bump
+        vertical_velocity *= -1;
+      }
 
-        m_cam_pos = updated_pos;
+      m_cam_pos = updated_pos;
     }
     /*
     Collisions cols = other_obj->calc_colision(m_cam_pos);

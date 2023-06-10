@@ -5,8 +5,6 @@
 #include <iostream>
 #include <vector>
 
-
-
 void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2{baseM};
 
@@ -43,21 +41,20 @@ void Floor::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   }
 }
 
-bool Floor::hasColided(const glm::vec3& other_pos)
-{
-    float diff = other_pos.y - m_position.y;
-    if (diff < 0) {
-		return true;
-	}
-    return false;
+bool Floor::hasColided(const glm::vec3 &other_pos) {
+  float diff = other_pos.y - m_position.y;
+  if (diff < 0) {
+    return true;
+  }
+  return false;
 }
 
-glm::vec3 Floor::modify_cam_pos(const glm::vec3& old_cam_pos, const glm::vec3& new_cam_pos)
-{
-    // set y on NEW position to floor level
-    auto pos = new_cam_pos;
-    pos.y = m_position.y ;
-    return pos;
+glm::vec3 Floor::modify_cam_pos(const glm::vec3 &old_cam_pos,
+                                const glm::vec3 &new_cam_pos) {
+  // set y on NEW position to floor level
+  auto pos = new_cam_pos;
+  pos.y = m_position.y;
+  return pos;
 }
 
 Floor::Floor(float floor_level, int width, int length)

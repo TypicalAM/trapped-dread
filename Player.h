@@ -96,7 +96,5 @@ public:
   glm::mat4 calcViewMatrix();
   void mouse_move_callback(double xpos, double ypos);
 
-  glm::vec3 getAngles() {
-      return m_euler_angles;
-  }
+  glm::vec3 getAngles() { return m_euler_angles; }
 };
