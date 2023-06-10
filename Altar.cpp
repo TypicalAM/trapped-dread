@@ -1,13 +1,11 @@
-#include "Wall.h"
+#include "Altar.h"
 #include "CollidableObj.h"
 #include "myCube.h"
-#include <array>
-#include <iostream>
 
 #define WALL_SCALER glm::vec3(0.5f, 0.5f, 0.5f)
 #define CUBE_OFSET_Y 0.51F
 
-void Wall::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
+void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
   glm::mat4 M3 = glm::scale(M2, WALL_SCALER);
 
@@ -21,7 +19,7 @@ void Wall::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glDisableVertexAttribArray(sp->a("color"));
 }
 
-bool Wall::hasColided(const glm::vec3 &other_pos) {
+bool Altar::hasColided(const glm::vec3 &other_pos) {
   glm::vec3 diff = m_position - other_pos;
   return diff.x >= -m_bounding_box_radius.x &&
          diff.x <= m_bounding_box_radius.x &&
@@ -31,11 +29,11 @@ bool Wall::hasColided(const glm::vec3 &other_pos) {
          diff.z <= m_bounding_box_radius.z;
 }
 
-Wall::Wall(int x_pos, int y_pos, int layer)
+Altar ::Altar(int x_pos, int y_pos, AltarType type)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
                     glm::vec3(1, 1, 1)) {
   this->x_pos = x_pos;
   this->y_pos = y_pos;
-  this->layer = layer;
-  this->m_position = glm::vec3(x_pos, layer + CUBE_OFSET_Y, y_pos);
+  this->m_position = glm::vec3(x_pos, 0, y_pos);
+  this->type = type;
 }

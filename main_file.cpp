@@ -152,9 +152,12 @@ void freeOpenGLProgram(GLFWwindow *window) {
 // alters global `GameObjects`
 void setupInitialPositionsOfObjects(GameMap &map) {
   // GameObjects.push_back(std::unique_ptr<Floor>(new Floor(0.4f)));
-  GameObjects.push_back(map.gen_floor());
+  GameObjects.push_back(std::move(map.gen_floor()));
   for (auto &wall : map.gen_walls())
     GameObjects.push_back(std::move(wall));
+
+  for (auto &altars : map.gen_altars())
+    GameObjects.push_back(std::move(altars));
 
   // GameObjects.push_back(std::unique_ptr<CollidableTeapot>(
   //    new CollidableTeapot(glm::vec3(0, 2.f, 0))));

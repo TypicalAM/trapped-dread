@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Altar.h"
 #include "Floor.h"
 #include "Wall.h"
 #include <algorithm>
@@ -35,6 +36,8 @@ public:
   std::unique_ptr<Floor> gen_floor();       // generate a floor based on the map
   std::string pretty_print();               // pretty print the map
   std::vector<std::unique_ptr<Wall>>
-  gen_walls();                       // generate game objects based on the map
+  gen_walls(); // generate game objects based on the map
+  std::vector<std::unique_ptr<Altar>>
+  gen_altars();                      // generate altars based on the map
   glm::vec3 calc_player_start_pos(); // calculate the player's start position
 };

@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Altar.h"
 #include "Floor.h"
 #include "Wall.h"
 #include <algorithm>
@@ -69,6 +70,23 @@ std::vector<std::unique_ptr<Wall>> GameMap::gen_walls() {
 
   std::cout << "Walls size: " << walls.size() << std::endl;
   return walls;
+}
+
+std::vector<std::unique_ptr<Altar>> GameMap::gen_altars() {
+  std::vector<std::unique_ptr<Altar>> altars;
+
+  for (int y = 0; y < internal_map[0].size(); y++) {
+    for (int x = 0; x < internal_map[0][0].size(); x++) {
+      if (internal_map[0][y][x] == MapObject::START_ALTAR)
+        altars.push_back(std::make_unique<Altar>(x, y, START));
+
+      else if (internal_map[0][y][x] == MapObject::END_ALTAR)
+        altars.push_back(std::make_unique<Altar>(x, y, END));
+    }
+  }
+
+  std::cout << "Altars size: " << altars.size() << std::endl;
+  return altars;
 }
 
 GameMap::GameMap(Map3D map) {
