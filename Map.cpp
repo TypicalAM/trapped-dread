@@ -19,11 +19,17 @@ std::string GameMap::pretty_print() {
     for (int y = 0; y < internal_map[0].size(); y++) {
       for (int x = 0; x < internal_map[0][0].size(); x++) {
         switch (internal_map[layer][y][x]) {
-        case MapObject::START_ALTAR:
-          ss << "S";
+        case MapObject::START_BLUE_ALTAR:
+          ss << "N";
           break;
-        case MapObject::END_ALTAR:
-          ss << "E";
+        case MapObject::END_BLUE_ALTAR:
+          ss << "Ń";
+          break;
+        case MapObject::START_RED_ALTAR:
+          ss << "C";
+          break;
+        case MapObject::END_RED_ALTAR:
+          ss << "Ć";
           break;
         case MapObject::WALL:
           ss << "W";
@@ -79,11 +85,14 @@ std::vector<std::unique_ptr<Altar>> GameMap::gen_altars() {
 
   for (int y = 0; y < internal_map[0].size(); y++) {
     for (int x = 0; x < internal_map[0][0].size(); x++) {
-      if (internal_map[0][y][x] == MapObject::START_ALTAR)
-        altars.push_back(std::make_unique<Altar>(x, y, START));
-
-      else if (internal_map[0][y][x] == MapObject::END_ALTAR)
-        altars.push_back(std::make_unique<Altar>(x, y, END));
+      if (internal_map[0][y][x] == MapObject::START_BLUE_ALTAR)
+        altars.push_back(std::make_unique<Altar>(x, y, START, BLUE));
+      else if (internal_map[0][y][x] == MapObject::END_BLUE_ALTAR)
+        altars.push_back(std::make_unique<Altar>(x, y, END, BLUE));
+      else if (internal_map[0][y][x] == MapObject::START_RED_ALTAR)
+        altars.push_back(std::make_unique<Altar>(x, y, START, RED));
+      else if (internal_map[0][y][x] == MapObject::END_RED_ALTAR)
+        altars.push_back(std::make_unique<Altar>(x, y, END, RED));
     }
   }
 
@@ -98,9 +107,9 @@ GameMap::GameMap(Map3D map) {
   for (int layer = 0; layer < map.size(); layer++) {
     for (int y = 0; y < map[0].size(); y++) {
       for (int x = 0; x < map[0][0].size(); x++) {
-        if (map[layer][y][x] == MapObject::START_ALTAR) {
+        if (map[layer][y][x] == MapObject::START_BLUE_ALTAR) {
           start_position = std::make_pair(x, y);
-        } else if (map[layer][y][x] == MapObject::END_ALTAR) {
+        } else if (map[layer][y][x] == MapObject::END_RED_ALTAR) {
           end_position = std::make_pair(x, y);
         }
       }
