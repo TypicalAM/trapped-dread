@@ -84,7 +84,7 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
     if (key == GLFW_KEY_KP_SUBTRACT)
       camera_ptr->inc_yaw(); // toggle ala noclip
     if (key == GLFW_KEY_0)
-      camera_ptr->reset_cam();// toggle ala noclip
+      camera_ptr->reset_cam(); // toggle ala noclip
   }
 
   if (action == GLFW_RELEASE) {
@@ -188,8 +188,14 @@ void drawScene(GLFWwindow *window) {
   glfwSwapBuffers(window); // Przerzuć tylny bufor na przedni
 }
 
-int main(void) {
-  auto map = (new MapLoader("example.map"))->load_map();
+int main(int argc, char **argv) {
+  if (argc != 2) {
+    fprintf(stderr, "Nie podano nazwy pliku z mapą.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  std::string map_path = "maps/" + std::string(argv[1]) + ".map";
+  auto map = (new MapLoader(map_path))->load_map();
   if (!map.has_value()) {
     fprintf(stderr, "Nie można załadować mapy.\n");
     exit(EXIT_FAILURE);
