@@ -11,6 +11,11 @@ private:
   int y_pos;
   AltarType type;
 
+  float *verticesArray;
+  float *normalsArray;
+  float *texCoordsArray;
+  size_t numVertices;
+
 public:
   Altar(int x_pos, int y_pos, AltarType type);
   virtual ~Altar() {}

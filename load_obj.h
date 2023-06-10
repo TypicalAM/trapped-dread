@@ -25,6 +25,7 @@ struct Face {
 void loadOBJ(const std::string &filename, float *&verticesArray,
              float *&normalsArray, float *&texCoordsArray,
              size_t &numVertices) {
+
   std::ifstream file(filename);
   std::string line;
   std::vector<Point3D> vertices;
@@ -91,6 +92,7 @@ void loadOBJ(const std::string &filename, float *&verticesArray,
       const Point3D &vertex = vertices[vertexIndex];
       const TexCoord2D &texCoord = texCoords[texCoordIndex];
       const Normal3D &normal = normals[normalIndex];
+      std::cout << "tutaj sie wywalam" << std::endl;
       vertexArray.push_back(vertex.x);
       vertexArray.push_back(vertex.y);
       vertexArray.push_back(vertex.z);
@@ -100,6 +102,7 @@ void loadOBJ(const std::string &filename, float *&verticesArray,
       normalArray.push_back(normal.x);
       normalArray.push_back(normal.y);
       normalArray.push_back(normal.z);
+      std::cout << "tutja sie wywalam 2?" << std::endl;
     }
   }
 

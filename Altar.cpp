@@ -1,6 +1,8 @@
 #include "Altar.h"
 #include "CollidableObj.h"
+#include "load_obj.h"
 #include "myCube.h"
+#include <iostream>
 
 #define WALL_SCALER glm::vec3(0.5f, 0.5f, 0.5f)
 #define CUBE_OFSET_Y 0.51F
@@ -11,12 +13,9 @@ void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
 
   glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M3));
   glEnableVertexAttribArray(sp->a("vertex"));
-  glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, myCubeVertices);
-  glEnableVertexAttribArray(sp->a("color"));
-  glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0, myCubeColors);
-  glDrawArrays(GL_TRIANGLES, 0, myCubeVertexCount);
+  glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, verticesArray);
+  glDrawArrays(GL_TRIANGLES, 0, numVertices);
   glDisableVertexAttribArray(sp->a("vertex"));
-  glDisableVertexAttribArray(sp->a("color"));
 }
 
 bool Altar::hasColided(const glm::vec3 &other_pos) {
@@ -36,4 +35,11 @@ Altar ::Altar(int x_pos, int y_pos, AltarType type)
   this->y_pos = y_pos;
   this->m_position = glm::vec3(x_pos, 0, y_pos);
   this->type = type;
+
+  // Load the object from file, no error handling because we HATE IT
+  // TODO: Throw somethin here
+  loadOBJ("models/cat.obj", verticesArray, normalsArray, texCoordsArray,
+          numVertices);
+
+  std::cout << "Loaded object, size is " << numVertices << std::endl;
 }
