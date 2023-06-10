@@ -26,6 +26,7 @@
 #include "common.h"
 #include "CollidableTeapot.h"
 #include "Floor.h"
+#include "LightSource.h"
 
 float speed_forward = 0;
 float speed_right = 0;
@@ -57,6 +58,9 @@ ShaderProgram *sp;
 Player *camera_ptr; // singleton troche - mozna to lepiej napisac
 std::vector<std::unique_ptr<CollidableObj>> GameObjects;
 std::vector<std::unique_ptr<CollidableObj>> heldGameObjects;
+
+std::vector<std::unique_ptr<PointLightSource>> StatonaryPointLightSources; // swiatło za graczem sie nie liczy
+std::vector<std::unique_ptr<ConeLightSource>> StatonaryConeLightSources;
 
 // Procedura obsługi błędów
 void error_callback(int error, const char *description) {
