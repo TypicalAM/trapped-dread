@@ -55,11 +55,11 @@ bool MapLoader::file_correct() {
       // Check if we are on the first line
       if (i == 0) {
         for (int k = 0; k < dimensions[0]; k++) {
-          if (line[k] == 'S') {
+          if (line[k] == 'B') {
             if (first_floor_has_start)
               return false;
             first_floor_has_start = true;
-          } else if (line[k] == 'E') {
+          } else if (line[k] == 'N') {
             if (first_floor_has_end)
               return false;
             first_floor_has_end = true;
@@ -110,11 +110,17 @@ GameMap MapLoader::parse_file() {
 
       for (int k = 0; k < dimensions[0]; k++) {
         switch (line[k]) {
-        case 'S':
-          row.push_back(MapObject::START_ALTAR);
+        case 'B':
+          row.push_back(MapObject::START_BLUE_ALTAR);
           break;
-        case 'E':
-          row.push_back(MapObject::END_ALTAR);
+        case 'N':
+          row.push_back(MapObject::END_BLUE_ALTAR);
+          break;
+        case 'R':
+          row.push_back(MapObject::START_RED_ALTAR);
+          break;
+        case 'C':
+          row.push_back(MapObject::END_RED_ALTAR);
           break;
         case 'W':
           row.push_back(MapObject::WALL);

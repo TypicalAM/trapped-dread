@@ -13,8 +13,10 @@
 enum MapObject {
   EMPTY,
   WALL,
-  START_ALTAR,
-  END_ALTAR,
+  START_BLUE_ALTAR,
+  START_RED_ALTAR,
+  END_BLUE_ALTAR,
+  END_RED_ALTAR,
 };
 
 // Map3D is a type representing a 3d vector of map objects
