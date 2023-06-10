@@ -24,7 +24,7 @@
 
 #include "Player.h"
 #include "common.h"
-
+#include "CollidableTeapot.h"
 #include "Floor.h"
 
 float speed_forward = 0;
@@ -56,6 +56,7 @@ bool can_fly = true;
 ShaderProgram *sp;
 Player *camera_ptr; // singleton troche - mozna to lepiej napisac
 std::vector<std::unique_ptr<CollidableObj>> GameObjects;
+std::vector<std::unique_ptr<CollidableObj>> heldGameObjects;
 
 // Procedura obsługi błędów
 void error_callback(int error, const char *description) {
@@ -100,6 +101,17 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
       movement_mask &= ~MOVE_UP;
     if (key == GLFW_KEY_LEFT_CONTROL)
       movement_mask &= ~MOVE_DOWN;
+    if (key == GLFW_KEY_E)
+    {
+        if (heldGameObjects.size() == 0) {
+            // pick up object
+            // for now, spawn a cube
+            heldGameObjects.push_back(std::unique_ptr<CollidableObj>(
+                new CollidableTeapot(
+                    glm::vec3(0, 0, 2)
+                )));
+        }
+    }
   }
 }
 
@@ -185,8 +197,29 @@ void drawScene(GLFWwindow *window) {
   // draw all the game objects
   // for now just floor
   for (auto &obj : GameObjects) {
+      // print type
+       std::cout << typeid(*obj).name() << std::endl;
+
     obj->draw(M, sp);
   }
+
+  // draw held objects - those moving with the cam
+  for (auto& obj : heldGameObjects) {
+      // print type
+      std::cout << "held: " << typeid(*obj).name() << std::endl;
+
+      glm::mat4 M2 = glm::translate(M, camera_ptr->getCamPos());
+      float angle = glm::radians(-1*camera_ptr->getAngles().y);
+      std::cout << angle << "\n";
+      M2 = glm::rotate(M2, angle + 1.4f, glm::vec3(0.f, 1.f, 0.f));
+      M2 = glm::translate(M2, glm::vec3(0.2f, -0.2f, 0.4f));
+
+      M2 = glm::scale(M2, glm::vec3(0.1));
+
+
+      obj->draw(M2, sp);
+  }
+
 
   glfwSwapBuffers(window); // Przerzuć tylny bufor na przedni
 }

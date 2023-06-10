@@ -1,7 +1,13 @@
 #include "CollidableTeapot.h"
+#include <iostream>
+
 
 void CollidableTeapot::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
-  glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(baseM));
+  
+  glm::mat4 M = glm::translate(baseM, m_position);
+    
+
+  glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
 
   glEnableVertexAttribArray(
       sp->a("vertex")); // W³¹cz przesy³anie danych do atrybutu vertex

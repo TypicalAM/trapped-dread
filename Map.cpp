@@ -75,6 +75,8 @@ std::vector<std::unique_ptr<Wall>> GameMap::gen_walls() {
 std::vector<std::unique_ptr<Altar>> GameMap::gen_altars() {
   std::vector<std::unique_ptr<Altar>> altars;
 
+  std::cout << "penis pl\n";
+
   for (int y = 0; y < internal_map[0].size(); y++) {
     for (int x = 0; x < internal_map[0][0].size(); x++) {
       if (internal_map[0][y][x] == MapObject::START_ALTAR)
@@ -84,6 +86,8 @@ std::vector<std::unique_ptr<Altar>> GameMap::gen_altars() {
         altars.push_back(std::make_unique<Altar>(x, y, END));
     }
   }
+
+  std::cout << "juz nie\n";
 
   std::cout << "Altars size: " << altars.size() << std::endl;
   return altars;
