@@ -1,26 +1,40 @@
-#include "CollidableTeapot.h"
-#include <iostream>
-
-void CollidableTeapot::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
-
-  glm::mat4 M = glm::translate(baseM, m_position);
-
-  glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
-
-  glEnableVertexAttribArray(
-      sp->a("vertex")); // W³¹cz przesy³anie danych do atrybutu vertex
-  glVertexAttribPointer(
-      sp->a("vertex"), 4, GL_FLOAT, false, 0,
-      myTeapotVertices); // Wska¿ tablicê z danymi dla atrybutu vertex
-
-  glEnableVertexAttribArray(sp->a("color"));
-  glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0,
-                        myTeapotColors); // za³aduj kolory
-
-  glDrawArrays(GL_TRIANGLES, 0, myTeapotVertexCount); // Narysuj obiekt
-
-  glDisableVertexAttribArray(
-      sp->a("vertex")); // Wy³¹cz przesy³anie danych do atrybutu vertex
-  glDisableVertexAttribArray(
-      sp->a("color")); // Wy³¹cz przesy³anie danych do atrybutu vertex
-}
+ï»¿//#include "CollidableTeapot.h"
+//#include <iostream>
+//
+//void CollidableTeapot::draw(const glm::mat4& baseM, ShaderProgram* sp) {
+//
+//    glm::mat4 M = glm::translate(baseM, m_position);
+//
+//    glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M));
+//
+//
+//    glEnableVertexAttribArray(sp->a("vertex"));  //Wï¿½ï¿½cz przesyï¿½anie danych do atrybutu vertex
+//    glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, myTeapotVertices); //Wskaï¿½ tablicï¿½ z danymi dla atrybutu vertex
+//
+//    glEnableVertexAttribArray(sp->a("color"));  //Wï¿½ï¿½cz przesyï¿½anie danych do atrybutu color
+//    glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0, myTeapotColors); //Wskaï¿½ tablicï¿½ z danymi dla atrybutu color
+//
+//    glEnableVertexAttribArray(sp->a("normal"));  //Wï¿½ï¿½cz przesyï¿½anie danych do atrybutu normal
+//    glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, myTeapotVertexNormals); //Wskaï¿½ tablicï¿½ z danymi dla atrybutu normal
+//
+//    glEnableVertexAttribArray(sp->a("texCoord0"));  //Wï¿½ï¿½cz przesyï¿½anie danych do atrybutu texCoord0
+//    glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0, myTeapotTexCoords); //Wskaï¿½ tablicï¿½ z danymi dla atrybutu texCoord0
+//
+//    glActiveTexture(GL_TEXTURE0);
+//    glTexParameteri(GL_TEXTURE_2D,
+//        GL_TEXTURE_WRAP_S,
+//        GL_MIRRORED_REPEAT);
+//
+//    glBindTexture(GL_TEXTURE_2D, m_texture);
+//
+//    glUniform1i(sp->u("textureMap0"), 0);
+//
+//    glDrawArrays(GL_TRIANGLES, 0, myTeapotVertexCount); //Narysuj obiekt
+//
+//    glDisableVertexAttribArray(sp->a("vertex"));  //Wyï¿½ï¿½cz przesyï¿½anie danych do atrybutu vertex
+//    glDisableVertexAttribArray(sp->a("color"));  //Wyï¿½ï¿½cz przesyï¿½anie danych do atrybutu color
+//    glDisableVertexAttribArray(sp->a("normal"));  //Wyï¿½ï¿½cz przesyï¿½anie danych do atrybutu normal
+//    glDisableVertexAttribArray(sp->a("texCoord0"));  //Wyï¿½ï¿½cz przesyï¿½anie danych do atrybutu texCoord0
+//
+//}
+//

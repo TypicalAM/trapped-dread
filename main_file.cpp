@@ -251,11 +251,8 @@ void initOpenGLProgram(GLFWwindow *window) {
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-  wallTexture = readTexture("wall.png");
-  floorTexture = readTexture("floor.png");
-  ceilingTexture = readTexture("ceiling.png");
-  skullTexture = readTexture("skull.png");
-  altarTexture = readTexture("altar.png");
+  floorTexture = readTexture("floor_diff.png");
+  wallTexture = readTexture("wall_diffuse.png");
 
   sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 }
@@ -271,18 +268,24 @@ void freeOpenGLProgram(GLFWwindow *window) {
 
 // alters global `GameObjects`
 void setupInitialPositionsOfObjects(GameMap &map) {
-  GameObjects.push_back(std::move(map.gen_floor()));
+    auto floor = map.gen_floor();
+    floor->bindTexture(floorTexture);
+    GameObjects.push_back(std::move(floor));
+
   GameObjects.push_back(std::move(map.gen_exit()));
-  for (auto &wall : map.gen_walls()) {
-    wall->bindTexture(wallTexture);
-    GameObjects.push_back(std::move(wall));
+  // TODO FIXME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!! 
+  // analogicze dla exit textura
+  
+  for (auto& wall : map.gen_walls()) {
+      wall->bindTexture(wallTexture);
+      GameObjects.push_back(std::move(wall));
   }
-  for (auto &altars : map.gen_altars()) {
-    if (typeid(*altars) == typeid(Skull))
-      altars->bindTexture(skullTexture);
-    else
-      altars->bindTexture(altarTexture);
-    GameObjects.push_back(std::move(altars));
+  for (auto& altars : map.gen_altars()) {
+      if (typeid(*altars) == typeid(Skull))
+          altars->bindTexture(skullTexture);
+      else
+          altars->bindTexture(altarTexture);
+      GameObjects.push_back(std::move(altars));
   }
 }
 

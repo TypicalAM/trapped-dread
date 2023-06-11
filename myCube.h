@@ -17,6 +17,7 @@ extern float myCubeVertices[];
 extern float myCubeColors[];
 extern float myCubeNormals[];
 extern float myCubeVertexNormals[];
+extern float myCubeTexCoordsScaled[];
 extern float myCubeTexCoords[];
 extern float myCubeC1[];
 extern float myCubeC2[];
