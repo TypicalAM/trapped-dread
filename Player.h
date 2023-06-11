@@ -27,7 +27,7 @@ private:
   float m_screen_width;
   float m_sceen_height;
 
-  bool allow_fly = true;
+  bool allow_fly = false;
   bool is_crouched = false;
   float base_floor_level;
 

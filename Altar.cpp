@@ -14,8 +14,11 @@ void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M3));
   glEnableVertexAttribArray(sp->a("vertex"));
   glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, verticesArray);
+  glEnableVertexAttribArray(sp->a("color"));
+  glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0, colorsArray);
   glDrawArrays(GL_TRIANGLES, 0, numVertices);
   glDisableVertexAttribArray(sp->a("vertex"));
+  glDisableVertexAttribArray(sp->a("color"));
 }
 
 bool Altar::hasColided(const glm::vec3 &other_pos) {
@@ -36,9 +39,16 @@ Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
   this->color = color;
 
   // Load the object from file, no error handling because we HATE IT
-  // TODO: Add coloring logic
   loadOBJ("models/table.obj", verticesArray, normalsArray, texCoordsArray,
           numVertices);
+
+  colorsArray = new float[numVertices * 4];
+  for (int i = 0; i < numVertices; i++) {
+    colorsArray[i * 4] = color == AltarColor::RED_ALTAR ? 1.0f : 0.0f;
+    colorsArray[i * 4 + 1] = color == AltarColor::RED_ALTAR ? 0.0f : 0.0f;
+    colorsArray[i * 4 + 2] = color == AltarColor::RED_ALTAR ? 0.0f : 1.0f;
+    colorsArray[i * 4 + 3] = 1.0f;
+  }
 
   std::cout << "Loaded object, size is " << numVertices << std::endl;
 }

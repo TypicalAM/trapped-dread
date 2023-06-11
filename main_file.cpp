@@ -52,8 +52,6 @@ float aspectRatio = 1;
 float INITIAL_HEIGHT = 1000;
 float INITAL_WIDTH = 1000;
 
-bool can_fly = true;
-
 ShaderProgram *sp;
 Player *camera_ptr; // singleton troche - mozna to lepiej napisac
 std::vector<std::unique_ptr<CollidableObj>> GameObjects;
