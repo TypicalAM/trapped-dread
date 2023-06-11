@@ -1,5 +1,6 @@
 #include "MapLoader.h"
 #include "Map.h"
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -34,6 +35,7 @@ bool MapLoader::file_correct() {
   }
 
   if (dimensions.size() != 3) {
+    std::cout << "Nieprawidlowa liczba wymiarow" << std::endl;
     return false;
   }
 
@@ -43,32 +45,42 @@ bool MapLoader::file_correct() {
   for (int i = 0; i < dimensions[2]; i++) {
     // Get the fisrt empty line
     std::getline(file, line);
-    if (line != "")
+    if (line != "") {
+      std::cout << "Pierwsza linia nie jest pusta" << std::endl;
       return false;
+    }
 
     // Get the next y lines and ensure they are x length
     for (int j = 0; j < dimensions[1]; j++) {
       std::getline(file, line);
-      if (line.length() != dimensions[0])
+      if (line.length() != dimensions[0]) {
+        std::cout << "Linia " << j << " nie ma wymaganej dlugosci" << std::endl;
         return false;
+      }
 
       // Check if we are on the first line
       if (i == 0) {
         for (int k = 0; k < dimensions[0]; k++) {
-          if (line[k] == 'B') {
-            if (first_floor_has_start)
+          if (line[k] == 'S') {
+            if (first_floor_has_start) {
+              std::cout << "Pierwszy start" << std::endl;
               return false;
+            }
             first_floor_has_start = true;
-          } else if (line[k] == 'N') {
-            if (first_floor_has_end)
+          } else if (line[k] == 'E') {
+            if (first_floor_has_end) {
+              std::cout << "Pierwszy end" << std::endl;
               return false;
+            }
             first_floor_has_end = true;
           }
         }
       } else {
         for (int k = 0; k < dimensions[0]; k++) {
-          if (line[k] == 'S' || line[k] == 'E')
+          if (line[k] == 'S' || line[k] == 'E') {
+            std::cout << "Here" << std::endl;
             return false;
+          }
         }
       }
     }
@@ -76,8 +88,10 @@ bool MapLoader::file_correct() {
 
   file.close();
 
-  if (!first_floor_has_start || !first_floor_has_end)
+  if (!first_floor_has_start || !first_floor_has_end) {
+    std::cout << "Nie ma startu lub endu" << std::endl;
     return false;
+  }
 
   return true;
 }
@@ -110,16 +124,22 @@ GameMap MapLoader::parse_file() {
 
       for (int k = 0; k < dimensions[0]; k++) {
         switch (line[k]) {
+        case 'S':
+          row.push_back(MapObject::START_POS);
+          break;
+        case 'E':
+          row.push_back(MapObject::END_POS);
+          break;
         case 'B':
           row.push_back(MapObject::START_BLUE_ALTAR);
           break;
-        case 'N':
+        case 'b':
           row.push_back(MapObject::END_BLUE_ALTAR);
           break;
         case 'R':
           row.push_back(MapObject::START_RED_ALTAR);
           break;
-        case 'C':
+        case 'r':
           row.push_back(MapObject::END_RED_ALTAR);
           break;
         case 'W':
@@ -142,6 +162,9 @@ GameMap MapLoader::parse_file() {
 }
 
 std::optional<GameMap> MapLoader::load_map() {
+  std::cout << "Laduje mape" << std::endl;
+  std::cout << file_accessible() << std::endl;
+  std::cout << file_correct() << std::endl;
   if (file_accessible() && file_correct())
     return parse_file();
 

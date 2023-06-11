@@ -20,17 +20,23 @@ std::string GameMap::pretty_print() {
     for (int y = 0; y < internal_map[0].size(); y++) {
       for (int x = 0; x < internal_map[0][0].size(); x++) {
         switch (internal_map[layer][y][x]) {
+        case MapObject::START_POS:
+          ss << "S";
+          break;
+        case MapObject::END_POS:
+          ss << "E";
+          break;
         case MapObject::START_BLUE_ALTAR:
-          ss << "N";
+          ss << "B";
           break;
         case MapObject::END_BLUE_ALTAR:
-          ss << "Ń";
+          ss << "b";
           break;
         case MapObject::START_RED_ALTAR:
-          ss << "C";
+          ss << "R";
           break;
         case MapObject::END_RED_ALTAR:
-          ss << "Ć";
+          ss << "r";
           break;
         case MapObject::WALL:
           ss << "W";
@@ -114,9 +120,9 @@ GameMap::GameMap(Map3D map) {
   for (int layer = 0; layer < map.size(); layer++) {
     for (int y = 0; y < map[0].size(); y++) {
       for (int x = 0; x < map[0][0].size(); x++) {
-        if (map[layer][y][x] == MapObject::START_BLUE_ALTAR) {
+        if (map[layer][y][x] == MapObject::START_POS) {
           start_position = std::make_pair(x, y);
-        } else if (map[layer][y][x] == MapObject::END_RED_ALTAR) {
+        } else if (map[layer][y][x] == MapObject::END_POS) {
           end_position = std::make_pair(x, y);
         }
       }

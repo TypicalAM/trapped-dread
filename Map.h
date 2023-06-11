@@ -14,6 +14,8 @@
 enum MapObject {
   EMPTY,
   WALL,
+  START_POS,
+  END_POS,
   START_BLUE_ALTAR,
   START_RED_ALTAR,
   END_BLUE_ALTAR,
