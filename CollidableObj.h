@@ -46,6 +46,9 @@ public:
   // retuns true if this object can be grabbed
   virtual bool can_grab(const glm::vec3 &player_pos) { return false; }
 
+  // returns true if this object can be placed
+  virtual bool can_place_skull(const glm::vec3 &player_pos) { return false; }
+
   void debug_pos_print() {
     std::cout << "pos: " << m_position.x << " " << m_position.y << " "
               << m_position.z << std::endl;

@@ -22,13 +22,23 @@ void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
 }
 
 bool Altar::hasColided(const glm::vec3 &other_pos) {
-  glm::vec3 diff = m_position - other_pos;
+  // TODO: the bounding box has to be smaller
+  // than the placing box
+  return false;
+}
+
+bool Altar::can_place_skull(const glm::vec3 &player_pos) {
+  glm::vec3 diff = m_position - player_pos;
   return diff.x >= -m_bounding_box_radius.x &&
          diff.x <= m_bounding_box_radius.x &&
          diff.y >= -m_bounding_box_radius.y &&
          diff.y <= m_bounding_box_radius.y &&
          diff.z >= -m_bounding_box_radius.z &&
          diff.z <= m_bounding_box_radius.z;
+
+  std::cout << "can place skull" << std::endl;
+  std::cout << hasColided(player_pos) << std::endl;
+  return hasColided(player_pos);
 }
 
 Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
@@ -37,6 +47,8 @@ Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
   this->m_position = glm::vec3(x_pos + -0.1f, ALTAR_OFFSET_Y, y_pos);
   this->type = type;
   this->color = color;
+  this->x_pos = x_pos;
+  this->y_pos = y_pos;
 
   // Load the object from file, no error handling because we HATE IT
   loadOBJ("models/table.obj", verticesArray, normalsArray, texCoordsArray,

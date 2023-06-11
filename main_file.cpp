@@ -1,3 +1,4 @@
+#include "Altar.h"
 #include "Map.h"
 #include "MapLoader.h"
 #include <algorithm>
@@ -5,6 +6,7 @@
 #include <iterator>
 #include <map>
 #include <optional>
+#include <ostream>
 #include <string>
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_SWIZZLE
@@ -70,6 +72,70 @@ GLuint ceilingTexture;
 GLuint skullTexture;
 GLuint altarTexture;
 
+// Check if we can grab a skull and grab it
+bool can_grab_skull() {
+  std::cout << "we can grab an object" << std::endl;
+  glm::vec3 player_pos = camera_ptr->get_position();
+  for (int i = 0; i < GameObjects.size(); i++) {
+    if (!GameObjects[i]->can_grab(player_pos)) {
+      continue;
+    }
+
+    // We get the color from old skull, create a new one for the hand
+    // and delete the old one, the pointer to which will be freed
+    // because of going out of scope
+    SkullColor color = dynamic_cast<Skull *>(GameObjects[i].get())->get_color();
+    heldGameObjects.push_back(std::make_unique<Skull>(0, 0, color));
+    GameObjects.erase(GameObjects.begin() + i);
+    return true;
+  }
+
+  return false;
+}
+
+// Check if we can place a skull on a matching end altar
+bool can_place_skull() {
+  std::cout << "we have an object in our hand" << std::endl;
+  glm::vec3 player_pos = camera_ptr->get_position();
+  for (int i = 0; i < GameObjects.size(); i++) {
+    if (!GameObjects[i]->can_place_skull(player_pos)) {
+      continue;
+    }
+
+    std::cout << "we can place an object" << std::endl;
+    auto altar = dynamic_cast<Altar *>(GameObjects[i].get());
+    if (altar->get_type() != END)
+      continue;
+
+    auto altar_pos = altar->get_pos();
+    auto skull = dynamic_cast<Skull *>(heldGameObjects[0].get());
+
+    if ((altar->get_color() == RED_ALTAR && skull->get_color() == RED_SKULL) ||
+        (altar->get_color() == BLUE_ALTAR &&
+         skull->get_color() == BLUE_SKULL)) {
+      GameObjects.push_back(std::make_unique<Skull>(
+          altar_pos.first, altar_pos.second, skull->get_color()));
+      heldGameObjects.erase(heldGameObjects.begin());
+      return true;
+    }
+
+    if (heldGameObjects.size() != 2)
+      return false;
+
+    auto skull2 = dynamic_cast<Skull *>(heldGameObjects[1].get());
+    if ((altar->get_color() == RED_ALTAR && skull2->get_color() == RED_SKULL) ||
+        (altar->get_color() == BLUE_ALTAR &&
+         skull2->get_color() == BLUE_SKULL)) {
+      GameObjects.push_back(std::make_unique<Skull>(
+          altar_pos.first, altar_pos.second, skull2->get_color()));
+      heldGameObjects.erase(heldGameObjects.begin() + 1);
+      return true;
+    }
+  }
+
+  return false;
+}
+
 // Procedura obsługi błędów
 void error_callback(int error, const char *description) {
   fputs(description, stderr);
@@ -114,22 +180,11 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
     if (key == GLFW_KEY_LEFT_CONTROL)
       movement_mask &= ~MOVE_DOWN;
     if (key == GLFW_KEY_E) {
-      if (heldGameObjects.size() <= 1) {
-        std::cout << "we can grab an obj" << std::endl;
-        glm::vec3 player_pos = camera_ptr->get_position();
-        for (int i = 0; i < GameObjects.size(); i++) {
-          if (GameObjects[i]->can_grab(player_pos)) {
-            // We get the color from old skull, create a new one for the hand
-            // and delete the old one, the pointer to which will be freed
-            // because of going out of scope
-            SkullColor color =
-                dynamic_cast<Skull *>(GameObjects[i].get())->get_color();
-            heldGameObjects.push_back(std::make_unique<Skull>(0, 0, color));
-            GameObjects.erase(GameObjects.begin() + i);
-            return;
-          }
-        }
-      }
+      if (heldGameObjects.size() >= 1 && can_place_skull())
+        return;
+
+      if (heldGameObjects.size() <= 1 && can_grab_skull())
+        return;
     }
   }
 }
@@ -259,7 +314,7 @@ void drawScene(GLFWwindow *window) {
   int i = 0;
   for (auto &obj : heldGameObjects) {
     // print type
-    std::cout << "held: " << typeid(*obj).name() << std::endl;
+    // std::cout << "held: " << typeid(*obj).name() << std::endl;
 
     glm::mat4 M2 = glm::translate(M, camera_ptr->getCamPos());
     float angle = glm::radians(-1 * camera_ptr->getAngles().y);
