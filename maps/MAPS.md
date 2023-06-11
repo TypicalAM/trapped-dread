@@ -20,7 +20,7 @@ After the blank line the map consists of $z$ sets of $y$ lines. Here are the ele
 - `b` - ending blue altar
 - `R` - entry red altar
 - `r` - ending red altar
-- `0` - air (empty spaces)
+- ` ` - air (empty spaces)
 - `W` - wall
 
 An example map looks like this:
@@ -28,9 +28,9 @@ An example map looks like this:
 ```
 4,3,2
 
-S00B
-0000
-0E0b
+S  B
+    
+ E b
 
 WWWW
 WWWW

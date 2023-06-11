@@ -145,7 +145,7 @@ GameMap MapLoader::parse_file() {
         case 'W':
           row.push_back(MapObject::WALL);
           break;
-        case '0':
+        case ' ':
           row.push_back(MapObject::EMPTY);
           break;
         }
