@@ -1,4 +1,4 @@
-﻿#version 330
+#version 330
 
 uniform sampler2D textureMap0; 
 
