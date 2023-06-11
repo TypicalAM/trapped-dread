@@ -1,4 +1,4 @@
-#include "Altar.h"
+﻿#include "Altar.h"
 #include "CollidableObj.h"
 #include "load_obj.h"
 #include "myCube.h"
@@ -11,14 +11,34 @@ void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
   glm::mat4 M3 = glm::scale(M2, ALTAR_SCALAR);
 
-  glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M3));
-  glEnableVertexAttribArray(sp->a("vertex"));
-  glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, verticesArray);
-  glEnableVertexAttribArray(sp->a("color"));
-  glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0, colorsArray);
-  glDrawArrays(GL_TRIANGLES, 0, numVertices);
-  glDisableVertexAttribArray(sp->a("vertex"));
-  glDisableVertexAttribArray(sp->a("color"));
+  glEnableVertexAttribArray(sp->a("vertex"));  //W��cz przesy�anie danych do atrybutu vertex
+  glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, verticesArray); //Wska� tablic� z danymi dla atrybutu vertex
+
+  glEnableVertexAttribArray(sp->a("color"));  //W��cz przesy�anie danych do atrybutu color
+  glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0, colorsArray); //Wska� tablic� z danymi dla atrybutu color
+
+  glEnableVertexAttribArray(sp->a("normal"));  //W��cz przesy�anie danych do atrybutu normal
+  glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, normalsArray); //Wska� tablic� z danymi dla atrybutu normal
+
+  glEnableVertexAttribArray(sp->a("texCoord0"));  //W��cz przesy�anie danych do atrybutu texCoord0
+  glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0, texCoordsArray); //Wska� tablic� z danymi dla atrybutu texCoord0
+
+  glActiveTexture(GL_TEXTURE0);
+  glTexParameteri(GL_TEXTURE_2D,
+      GL_TEXTURE_WRAP_S,
+      GL_MIRRORED_REPEAT);
+
+  glBindTexture(GL_TEXTURE_2D, m_texture);
+
+  glUniform1i(sp->u("textureMap0"), 0);
+
+  glDrawArrays(GL_TRIANGLES, 0, numVertices); //Narysuj obiekt
+
+  glDisableVertexAttribArray(sp->a("vertex"));  //Wy��cz przesy�anie danych do atrybutu vertex
+  glDisableVertexAttribArray(sp->a("color"));  //Wy��cz przesy�anie danych do atrybutu color
+  glDisableVertexAttribArray(sp->a("normal"));  //Wy��cz przesy�anie danych do atrybutu normal
+  glDisableVertexAttribArray(sp->a("texCoord0"));  //Wy��cz przesy�anie danych do atrybutu texCoord0
+
 }
 
 bool Altar::hasColided(const glm::vec3 &other_pos) {
