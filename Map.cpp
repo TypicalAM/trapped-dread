@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Altar.h"
+#include "Exit.h"
 #include "Floor.h"
 #include "Skull.h"
 #include "Wall.h"
@@ -113,6 +114,17 @@ std::vector<std::unique_ptr<CollidableObj>> GameMap::gen_altars() {
 
   std::cout << "Altars size: " << altars.size() << std::endl;
   return altars;
+}
+
+std::unique_ptr<Exit> GameMap::gen_exit() {
+  for (int y = 0; y < internal_map[0].size(); y++) {
+    for (int x = 0; x < internal_map[0][0].size(); x++) {
+      if (internal_map[0][y][x] == MapObject::END_POS)
+        return std::make_unique<Exit>(x, y);
+    }
+  }
+
+  return nullptr;
 }
 
 GameMap::GameMap(Map3D map) {

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "CollidableObj.h"
+#include "Exit.h"
 #include "Wall.h"
 #include "common.h"
 
@@ -106,6 +107,9 @@ void Player::update(
 
     if (other_obj->hasColided(m_cam_pos)) {
       // std::cout << "inside " << typeid(*other_obj).name() << std::endl;
+      if (typeid(*other_obj) == typeid(Exit))
+        if (placed_blue_skull && placed_red_skull)
+          return toggle_fly();
 
       auto updated_pos = other_obj->modify_cam_pos(old_cam_pos, m_cam_pos);
       auto diff = updated_pos - m_cam_pos;

@@ -33,6 +33,9 @@ private:
 
   bool is_on_floor = false;
 
+  bool placed_blue_skull = false;
+  bool placed_red_skull = false;
+
   glm::vec3 calc_forward();
 
 public:
@@ -99,4 +102,7 @@ public:
   void mouse_move_callback(double xpos, double ypos);
 
   glm::vec3 getAngles() { return m_euler_angles; }
+
+  void place_blue_skull() { placed_blue_skull = true; }
+  void place_red_skull() { placed_red_skull = true; }
 };

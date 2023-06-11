@@ -113,6 +113,8 @@ bool can_place_skull() {
     if ((altar->get_color() == RED_ALTAR && skull->get_color() == RED_SKULL) ||
         (altar->get_color() == BLUE_ALTAR &&
          skull->get_color() == BLUE_SKULL)) {
+      skull->get_color() == BLUE_SKULL ? camera_ptr->place_blue_skull()
+                                       : camera_ptr->place_red_skull();
       GameObjects.push_back(std::make_unique<Skull>(
           altar_pos.first, altar_pos.second, skull->get_color()));
       heldGameObjects.erase(heldGameObjects.begin());
@@ -126,6 +128,8 @@ bool can_place_skull() {
     if ((altar->get_color() == RED_ALTAR && skull2->get_color() == RED_SKULL) ||
         (altar->get_color() == BLUE_ALTAR &&
          skull2->get_color() == BLUE_SKULL)) {
+      skull2->get_color() == BLUE_SKULL ? camera_ptr->place_blue_skull()
+                                        : camera_ptr->place_red_skull();
       GameObjects.push_back(std::make_unique<Skull>(
           altar_pos.first, altar_pos.second, skull2->get_color()));
       heldGameObjects.erase(heldGameObjects.begin() + 1);
@@ -267,8 +271,8 @@ void freeOpenGLProgram(GLFWwindow *window) {
 
 // alters global `GameObjects`
 void setupInitialPositionsOfObjects(GameMap &map) {
-  // GameObjects.push_back(std::unique_ptr<Floor>(new Floor(0.4f)));
   GameObjects.push_back(std::move(map.gen_floor()));
+  GameObjects.push_back(std::move(map.gen_exit()));
   for (auto &wall : map.gen_walls()) {
     wall->bindTexture(wallTexture);
     GameObjects.push_back(std::move(wall));

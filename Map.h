@@ -2,6 +2,7 @@
 
 #include "Altar.h"
 #include "CollidableObj.h"
+#include "Exit.h"
 #include "Floor.h"
 #include "Wall.h"
 #include <algorithm>
@@ -44,5 +45,6 @@ public:
   gen_walls(); // generate game objects based on the map
   std::vector<std::unique_ptr<CollidableObj>>
   gen_altars();                      // generate altars based on the map
+  std::unique_ptr<Exit> gen_exit();  // generate an exit based on the map
   glm::vec3 calc_player_start_pos(); // calculate the player's start position
 };
