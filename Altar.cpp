@@ -4,41 +4,56 @@
 #include "myCube.h"
 #include <iostream>
 
-#define ALTAR_SCALAR glm::vec3(0.1f, 0.1f, 0.1f)
-#define ALTAR_OFFSET_Y -0.2F
+#define ALTAR_SCALAR glm::vec3(0.001f, 0.001f, 0.001f)
+#define ALTAR_OFFSET_Y 0.4f
 
 void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
   glm::mat4 M3 = glm::scale(M2, ALTAR_SCALAR);
+  std::cout << "Drawing object" << std::endl;
 
-  glEnableVertexAttribArray(sp->a("vertex"));  //W��cz przesy�anie danych do atrybutu vertex
-  glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, verticesArray); //Wska� tablic� z danymi dla atrybutu vertex
+  glEnableVertexAttribArray(
+      sp->a("vertex")); // W��cz przesy�anie danych do atrybutu vertex
+  glVertexAttribPointer(
+      sp->a("vertex"), 4, GL_FLOAT, false, 0,
+      verticesArray); // Wska� tablic� z danymi dla atrybutu vertex
 
-  glEnableVertexAttribArray(sp->a("color"));  //W��cz przesy�anie danych do atrybutu color
-  glVertexAttribPointer(sp->a("color"), 4, GL_FLOAT, false, 0, colorsArray); //Wska� tablic� z danymi dla atrybutu color
+  glEnableVertexAttribArray(
+      sp->a("color")); // W��cz przesy�anie danych do atrybutu color
+  glVertexAttribPointer(
+      sp->a("color"), 4, GL_FLOAT, false, 0,
+      colorsArray); // Wska� tablic� z danymi dla atrybutu color
 
-  glEnableVertexAttribArray(sp->a("normal"));  //W��cz przesy�anie danych do atrybutu normal
-  glVertexAttribPointer(sp->a("normal"), 4, GL_FLOAT, false, 0, normalsArray); //Wska� tablic� z danymi dla atrybutu normal
+  glEnableVertexAttribArray(
+      sp->a("normal")); // W��cz przesy�anie danych do atrybutu normal
+  glVertexAttribPointer(
+      sp->a("normal"), 4, GL_FLOAT, false, 0,
+      normalsArray); // Wska� tablic� z danymi dla atrybutu normal
 
-  glEnableVertexAttribArray(sp->a("texCoord0"));  //W��cz przesy�anie danych do atrybutu texCoord0
-  glVertexAttribPointer(sp->a("texCoord0"), 2, GL_FLOAT, false, 0, texCoordsArray); //Wska� tablic� z danymi dla atrybutu texCoord0
+  glEnableVertexAttribArray(
+      sp->a("texCoord0")); // W��cz przesy�anie danych do atrybutu texCoord0
+  glVertexAttribPointer(
+      sp->a("texCoord0"), 2, GL_FLOAT, false, 0,
+      texCoordsArray); // Wska� tablic� z danymi dla atrybutu texCoord0
 
   glActiveTexture(GL_TEXTURE0);
-  glTexParameteri(GL_TEXTURE_2D,
-      GL_TEXTURE_WRAP_S,
-      GL_MIRRORED_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 
   glBindTexture(GL_TEXTURE_2D, m_texture);
 
   glUniform1i(sp->u("textureMap0"), 0);
 
-  glDrawArrays(GL_TRIANGLES, 0, numVertices); //Narysuj obiekt
+  std::cout << "Drawing object" << std::endl;
+  glDrawArrays(GL_TRIANGLES, 0, numVertices); // Narysuj obiekt
 
-  glDisableVertexAttribArray(sp->a("vertex"));  //Wy��cz przesy�anie danych do atrybutu vertex
-  glDisableVertexAttribArray(sp->a("color"));  //Wy��cz przesy�anie danych do atrybutu color
-  glDisableVertexAttribArray(sp->a("normal"));  //Wy��cz przesy�anie danych do atrybutu normal
-  glDisableVertexAttribArray(sp->a("texCoord0"));  //Wy��cz przesy�anie danych do atrybutu texCoord0
-
+  glDisableVertexAttribArray(
+      sp->a("vertex")); // Wy��cz przesy�anie danych do atrybutu vertex
+  glDisableVertexAttribArray(
+      sp->a("color")); // Wy��cz przesy�anie danych do atrybutu color
+  glDisableVertexAttribArray(
+      sp->a("normal")); // Wy��cz przesy�anie danych do atrybutu normal
+  glDisableVertexAttribArray(
+      sp->a("texCoord0")); // Wy��cz przesy�anie danych do atrybutu texCoord0
 }
 
 bool Altar::hasColided(const glm::vec3 &other_pos) {
@@ -64,7 +79,7 @@ bool Altar::can_place_skull(const glm::vec3 &player_pos) {
 Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
                     glm::vec3(1, 1, 1)) {
-  this->m_position = glm::vec3(x_pos + -0.1f, ALTAR_OFFSET_Y, y_pos);
+  this->m_position = glm::vec3(x_pos, ALTAR_OFFSET_Y, y_pos);
   this->type = type;
   this->color = color;
   this->x_pos = x_pos;
