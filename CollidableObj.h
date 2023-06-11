@@ -43,6 +43,9 @@ public:
   virtual glm::vec3 modify_cam_pos(const glm::vec3 &old_cam_pos,
                                    const glm::vec3 &new_cam_pos);
 
+  // retuns true if this object can be grabbed
+  virtual bool can_grab(const glm::vec3 &player_pos) { return false; }
+
   void debug_pos_print() {
     std::cout << "pos: " << m_position.x << " " << m_position.y << " "
               << m_position.z << std::endl;

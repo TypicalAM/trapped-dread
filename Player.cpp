@@ -92,20 +92,20 @@ void Player::update(
 
   // update vertical position
   up_diff += vertical_velocity * timeDelta;
-  std::cout << "vertical_velocity: " << vertical_velocity << std::endl;
+  // std::cout << "vertical_velocity: " << vertical_velocity << std::endl;
 
   glm::vec3 old_cam_pos = m_cam_pos;
 
   update_cam_pos(fw_diff, right_diff, 0);
   m_cam_pos.y += vertical_velocity * timeDelta;
 
-  std::cout << "\n\n\n\n\nStart collision check" << std::endl;
+  // std::cout << "\n\n\n\n\nStart collision check" << std::endl;
 
   is_on_floor = false;
   for (auto &other_obj : other_objs) {
 
     if (other_obj->hasColided(m_cam_pos)) {
-      std::cout << "\t\tinside " << typeid(*other_obj).name() << std::endl;
+      // std::cout << "inside " << typeid(*other_obj).name() << std::endl;
 
       auto updated_pos = other_obj->modify_cam_pos(old_cam_pos, m_cam_pos);
       auto diff = updated_pos - m_cam_pos;

@@ -14,7 +14,7 @@ private:
   float *verticesArray;
   float *normalsArray;
   float *texCoordsArray;
-	float *colorsArray;
+  float *colorsArray;
   size_t numVertices;
 
 public:

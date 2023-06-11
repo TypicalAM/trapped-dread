@@ -47,6 +47,8 @@ public:
     m_sceen_height = screen_height;
   }
 
+  glm::vec3 get_position() { return m_cam_pos; }
+
   void reset_after_resize(float screen_width, float screen_height) {
     m_screen_width = screen_width;
     m_sceen_height = screen_height;

@@ -27,8 +27,8 @@ char *ShaderProgram::readFile(const char *fileName) {
   char *result;
 
 #pragma warning(                                                               \
-    suppress : 4996) // Wyłączenie błędu w Visual Studio wynikające z
-                     // nietrzymania się standardów przez Microsoft.
+        suppress : 4996) // Wyłączenie błędu w Visual Studio wynikające z
+                         // nietrzymania się standardów przez Microsoft.
   plik = fopen(fileName, "rb");
   if (plik != NULL) {
     fseek(plik, 0, SEEK_END);
@@ -36,8 +36,8 @@ char *ShaderProgram::readFile(const char *fileName) {
     fseek(plik, 0, SEEK_SET);
     result = new char[filesize + 1];
 #pragma warning(                                                               \
-    suppress : 6386) // Wyłączenie błędu w Visual Studio wynikającego z błędnej
-                     // analizy statycznej kodu.
+        suppress : 6386) // Wyłączenie błędu w Visual Studio wynikającego z
+                         // błędnej analizy statycznej kodu.
     int readsize = fread(result, 1, filesize, plik);
     result[filesize] = 0;
     fclose(plik);

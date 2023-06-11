@@ -14,12 +14,14 @@ private:
   float *verticesArray;
   float *normalsArray;
   float *texCoordsArray;
-	float *colorsArray;
+  float *colorsArray;
   size_t numVertices;
 
 public:
   Skull(int x_pos, int y_pos, SkullColor color);
-  virtual ~Skull() {}
-  virtual void draw(const glm::mat4 &baseM, ShaderProgram *sp) override;
+  ~Skull() {}
+  void draw(const glm::mat4 &baseM, ShaderProgram *sp) override;
   bool hasColided(const glm::vec3 &other_pos) override;
+  bool can_grab(const glm::vec3 &player_pos) override;
+  SkullColor get_color() { return color; }
 };

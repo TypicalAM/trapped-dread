@@ -1,5 +1,7 @@
 #include "Map.h"
 #include "MapLoader.h"
+#include <algorithm>
+#include <glm/fwd.hpp>
 #include <iterator>
 #include <map>
 #include <optional>
@@ -112,11 +114,21 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
     if (key == GLFW_KEY_LEFT_CONTROL)
       movement_mask &= ~MOVE_DOWN;
     if (key == GLFW_KEY_E) {
-      if (heldGameObjects.size() < 2) {
-        // pick up object
-        // for now, spawn a cube
-        heldGameObjects.push_back(
-            std::unique_ptr<CollidableObj>(new Skull(0, 0, BLUE_SKULL)));
+      if (heldGameObjects.size() <= 1) {
+        std::cout << "we can grab an obj" << std::endl;
+        glm::vec3 player_pos = camera_ptr->get_position();
+        for (int i = 0; i < GameObjects.size(); i++) {
+          if (GameObjects[i]->can_grab(player_pos)) {
+            // We get the color from old skull, create a new one for the hand
+            // and delete the old one, the pointer to which will be freed
+            // because of going out of scope
+            SkullColor color =
+                dynamic_cast<Skull *>(GameObjects[i].get())->get_color();
+            heldGameObjects.push_back(std::make_unique<Skull>(0, 0, color));
+            GameObjects.erase(GameObjects.begin() + i);
+            return;
+          }
+        }
       }
     }
   }
@@ -191,7 +203,8 @@ void initOpenGLProgram(GLFWwindow *window) {
 
 // Zwolnienie zasobów zajętych przez program
 void freeOpenGLProgram(GLFWwindow *window) {
-  //************Tutaj umieszczaj kod, który należy wykonać po zakończeniu pętli
+  //************Tutaj umieszczaj kod, który należy wykonać po zakończeniu
+  // pętli
   // głównej************
   delete camera_ptr;
   delete sp;
@@ -236,7 +249,7 @@ void drawScene(GLFWwindow *window) {
   // for now just floor
   for (auto &obj : GameObjects) {
     // print type
-    std::cout << typeid(*obj).name() << std::endl;
+    // std::cout << typeid(*obj).name() << std::endl;
 
     obj->draw(M, sp);
   }

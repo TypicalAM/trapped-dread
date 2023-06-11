@@ -1,5 +1,5 @@
 
- int myCubeVertexCount = 36;
+int myCubeVertexCount = 36;
 float myCubeVertices[] = {
     // Œciana 1
     1.0f,
