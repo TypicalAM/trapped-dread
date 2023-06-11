@@ -62,6 +62,13 @@ std::vector<std::unique_ptr<PointLightSource>>
     StatonaryPointLightSources; // swiatło za graczem sie nie liczy
 std::vector<std::unique_ptr<ConeLightSource>> StatonaryConeLightSources;
 
+// for now, later we will delete the nonimportant ones
+GLuint wallTexture;
+GLuint floorTexture;
+GLuint ceilingTexture;
+GLuint skullTexture;
+GLuint altarTexture;
+
 // Procedura obsługi błędów
 void error_callback(int error, const char *description) {
   fputs(description, stderr);
@@ -117,6 +124,29 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
   }
 }
 
+GLuint readTexture(const char* filename) {
+    GLuint tex;
+    glActiveTexture(GL_TEXTURE0);
+
+    //Wczytanie do pamięci komputera
+    std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
+    unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
+    //Wczytaj obrazek
+    unsigned error = lodepng::decode(image, width, height, filename);
+
+    //Import do pamięci karty graficznej
+    glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
+    glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
+    //Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
+        GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*)image.data());
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    return tex;
+}
+
 void windowResizeCallback(GLFWwindow *window, int width, int height) {
 
   INITAL_WIDTH = width;
@@ -152,6 +182,13 @@ void initOpenGLProgram(GLFWwindow *window) {
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
+  wallTexture = readTexture("wall.png");
+  floorTexture = readTexture("floor.png");
+  ceilingTexture = readTexture("ceiling.png");
+  skullTexture = readTexture("skull.png");
+  altarTexture = readTexture("altar.png");
+
+
   sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 }
 
@@ -167,12 +204,17 @@ void freeOpenGLProgram(GLFWwindow *window) {
 void setupInitialPositionsOfObjects(GameMap &map) {
   // GameObjects.push_back(std::unique_ptr<Floor>(new Floor(0.4f)));
   GameObjects.push_back(std::move(map.gen_floor()));
-  for (auto &wall : map.gen_walls())
-    GameObjects.push_back(std::move(wall));
-
-  for (auto &altars : map.gen_altars())
-    GameObjects.push_back(std::move(altars));
-
+  for (auto& wall : map.gen_walls()) {
+      wall->bindTexture(wallTexture);
+      GameObjects.push_back(std::move(wall));
+  }
+  for (auto& altars : map.gen_altars()) {
+      if (typeid(*altars) == typeid(Skull))
+		altars->bindTexture(skullTexture);
+	  else
+        altars->bindTexture(altarTexture);
+      GameObjects.push_back(std::move(altars));
+  }
   // GameObjects.push_back(std::unique_ptr<CollidableTeapot>(
   //    new CollidableTeapot(glm::vec3(0, 2.f, 0))));
   //

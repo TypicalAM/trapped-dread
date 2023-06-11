@@ -12,6 +12,8 @@ protected:
   glm::vec3 m_bounding_box_radius; // width , height, depth - everything is a
                                    // `prostopad³oœcian`
 
+  GLuint m_texture;
+
   // priatve helper functions for aabb collision algo
   std::pair<float, int> slab_intersetion(const glm::vec3 rayStart,
                                          const glm::vec3 &rayDir) const;
@@ -45,4 +47,6 @@ public:
     std::cout << "pos: " << m_position.x << " " << m_position.y << " "
               << m_position.z << std::endl;
   }
+
+  virtual void bindTexture(GLuint texture) { m_texture = texture; }
 };
