@@ -22,12 +22,11 @@
 #include "lodepng.h"
 #include "shaderprogram.h"
 
-#include "CollidableTeapot.h"
 #include "Floor.h"
 #include "LightSource.h"
 #include "Player.h"
-#include "common.h"
 #include "Skull.h"
+#include "common.h"
 
 float speed_forward = 0;
 float speed_right = 0;
@@ -116,35 +115,34 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
       if (heldGameObjects.size() < 2) {
         // pick up object
         // for now, spawn a cube
-        heldGameObjects.push_back(std::unique_ptr<CollidableObj>(
-            new Skull( 0, 0 , BLUE_SKULL)
-        ));
+        heldGameObjects.push_back(
+            std::unique_ptr<CollidableObj>(new Skull(0, 0, BLUE_SKULL)));
       }
     }
   }
 }
 
-GLuint readTexture(const char* filename) {
-    GLuint tex;
-    glActiveTexture(GL_TEXTURE0);
+GLuint readTexture(const char *filename) {
+  GLuint tex;
+  glActiveTexture(GL_TEXTURE0);
 
-    //Wczytanie do pamięci komputera
-    std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
-    unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
-    //Wczytaj obrazek
-    unsigned error = lodepng::decode(image, width, height, filename);
+  // Wczytanie do pamięci komputera
+  std::vector<unsigned char> image; // Alokuj wektor do wczytania obrazka
+  unsigned width, height; // Zmienne do których wczytamy wymiary obrazka
+  // Wczytaj obrazek
+  unsigned error = lodepng::decode(image, width, height, filename);
 
-    //Import do pamięci karty graficznej
-    glGenTextures(1, &tex); //Zainicjuj jeden uchwyt
-    glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
-    //Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
-        GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*)image.data());
+  // Import do pamięci karty graficznej
+  glGenTextures(1, &tex);            // Zainicjuj jeden uchwyt
+  glBindTexture(GL_TEXTURE_2D, tex); // Uaktywnij uchwyt
+  // Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
+  glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+               (unsigned char *)image.data());
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    return tex;
+  return tex;
 }
 
 void windowResizeCallback(GLFWwindow *window, int width, int height) {
@@ -188,7 +186,6 @@ void initOpenGLProgram(GLFWwindow *window) {
   skullTexture = readTexture("skull.png");
   altarTexture = readTexture("altar.png");
 
-
   sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 }
 
@@ -204,20 +201,17 @@ void freeOpenGLProgram(GLFWwindow *window) {
 void setupInitialPositionsOfObjects(GameMap &map) {
   // GameObjects.push_back(std::unique_ptr<Floor>(new Floor(0.4f)));
   GameObjects.push_back(std::move(map.gen_floor()));
-  for (auto& wall : map.gen_walls()) {
-      wall->bindTexture(wallTexture);
-      GameObjects.push_back(std::move(wall));
+  for (auto &wall : map.gen_walls()) {
+    wall->bindTexture(wallTexture);
+    GameObjects.push_back(std::move(wall));
   }
-  for (auto& altars : map.gen_altars()) {
-      if (typeid(*altars) == typeid(Skull))
-		altars->bindTexture(skullTexture);
-	  else
-        altars->bindTexture(altarTexture);
-      GameObjects.push_back(std::move(altars));
+  for (auto &altars : map.gen_altars()) {
+    if (typeid(*altars) == typeid(Skull))
+      altars->bindTexture(skullTexture);
+    else
+      altars->bindTexture(altarTexture);
+    GameObjects.push_back(std::move(altars));
   }
-  // GameObjects.push_back(std::unique_ptr<CollidableTeapot>(
-  //    new CollidableTeapot(glm::vec3(0, 2.f, 0))));
-  //
 }
 
 // Procedura rysująca zawartość sceny
@@ -254,12 +248,11 @@ void drawScene(GLFWwindow *window) {
     // print type
     std::cout << "held: " << typeid(*obj).name() << std::endl;
 
-
     glm::mat4 M2 = glm::translate(M, camera_ptr->getCamPos());
     float angle = glm::radians(-1 * camera_ptr->getAngles().y);
 
-    M2 = glm::rotate(M2, angle + 1.4f + -0.6f*i, glm::vec3(0.f, 1.f, 0.f));
-    M2 = glm::translate(M2, glm::vec3(0.2f , -0.4f, 0.4f));
+    M2 = glm::rotate(M2, angle + 1.4f + -0.6f * i, glm::vec3(0.f, 1.f, 0.f));
+    M2 = glm::translate(M2, glm::vec3(0.2f, -0.4f, 0.4f));
     M2 = glm::scale(M2, glm::vec3(0.5));
     // rotate the sceond skull to face inwards
     M2 = glm::rotate(M2, glm::radians(180.f), glm::vec3(0.f, 1.f, 0.f));
