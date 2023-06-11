@@ -27,6 +27,7 @@
 #include "LightSource.h"
 #include "Player.h"
 #include "common.h"
+#include "Skull.h"
 
 float speed_forward = 0;
 float speed_right = 0;
@@ -105,11 +106,12 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
     if (key == GLFW_KEY_LEFT_CONTROL)
       movement_mask &= ~MOVE_DOWN;
     if (key == GLFW_KEY_E) {
-      if (heldGameObjects.size() == 0) {
+      if (heldGameObjects.size() < 2) {
         // pick up object
         // for now, spawn a cube
         heldGameObjects.push_back(std::unique_ptr<CollidableObj>(
-            new CollidableTeapot(glm::vec3(0, 0, 2))));
+            new Skull( 0, 0 , BLUE_SKULL)
+        ));
       }
     }
   }
@@ -204,19 +206,25 @@ void drawScene(GLFWwindow *window) {
   }
 
   // draw held objects - those moving with the cam
+  int number_of_held = heldGameObjects.size();
+  int i = 0;
   for (auto &obj : heldGameObjects) {
     // print type
     std::cout << "held: " << typeid(*obj).name() << std::endl;
 
+
     glm::mat4 M2 = glm::translate(M, camera_ptr->getCamPos());
     float angle = glm::radians(-1 * camera_ptr->getAngles().y);
-    std::cout << angle << "\n";
-    M2 = glm::rotate(M2, angle + 1.4f, glm::vec3(0.f, 1.f, 0.f));
-    M2 = glm::translate(M2, glm::vec3(0.2f, -0.2f, 0.4f));
 
-    M2 = glm::scale(M2, glm::vec3(0.1));
+    M2 = glm::rotate(M2, angle + 1.4f + -0.6f*i, glm::vec3(0.f, 1.f, 0.f));
+    M2 = glm::translate(M2, glm::vec3(0.2f , -0.4f, 0.4f));
+    M2 = glm::scale(M2, glm::vec3(0.5));
+    // rotate the sceond skull to face inwards
+    M2 = glm::rotate(M2, glm::radians(180.f), glm::vec3(0.f, 1.f, 0.f));
 
     obj->draw(M2, sp);
+
+    i++;
   }
 
   glfwSwapBuffers(window); // Przerzuć tylny bufor na przedni
