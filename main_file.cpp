@@ -334,11 +334,16 @@ void drawScene(GLFWwindow *window) {
   glUniform4fv(sp->u("coneLightpositions"), 4, cone_light_loc_vec.data());
   glUniform4fv(sp->u("coneLightcolors"), 4, cone_light_colors);
 
-  // draw all the game objects
-  // for now just floor
+  auto player_pos = camera_ptr->get_position();
   for (auto &obj : GameObjects) {
+    float distance = glm::length(player_pos - obj->get_pos());
+    bool is_floor = typeid(*obj) == typeid(Floor);
+    if (!is_floor && distance > 7.0f)
+      continue;
+
+    std::cout << typeid(*obj).name() << std::endl;
+    std::cout << distance << std::endl;
     // print type
-    // std::cout << typeid(*obj).name() << std::endl;
 
     obj->draw(M, sp);
   }
