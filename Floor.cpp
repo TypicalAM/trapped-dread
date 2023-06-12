@@ -1,6 +1,6 @@
 ﻿#include "Floor.h"
 #include "CollidableObj.h"
-#include "myCube.h"
+#include "Cube.h"
 #include <array>
 #include <iostream>
 #include <vector>

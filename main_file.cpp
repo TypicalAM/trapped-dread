@@ -9,8 +9,6 @@
 #include <optional>
 #include <ostream>
 #include <string>
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_SWIZZLE
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -33,9 +31,8 @@
 #include "Skull.h"
 #include "common.h"
 
-float speed_forward = 0;
-float speed_right = 0;
-float speed_up = 0;
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_SWIZZLE
 
 // encode movement using bit mask
 // 0b0000 0000
@@ -50,29 +47,26 @@ float speed_up = 0;
 int movement_mask = 0;
 
 // added
-float walk_speed = 2.f;
-
+float walk_speed = 3.f;
 float aspectRatio = 1;
 
 float INITIAL_HEIGHT = 1000;
 float INITAL_WIDTH = 1000;
 
 ShaderProgram *sp;
-Player *camera_ptr; // singleton troche - mozna to lepiej napisac
-std::vector<std::unique_ptr<CollidableObj>> GameObjects;
-std::vector<std::unique_ptr<CollidableObj>> heldGameObjects;
+Player *camera_ptr;
 
-std::vector<std::unique_ptr<PointLightSource>>
-    StatonaryPointLightSources; // swiatło za graczem sie nie liczy
-std::vector<std::unique_ptr<ConeLightSource>> StatonaryConeLightSources;
-
-// for now, later we will delete the nonimportant ones
 GLuint wallTexture;
 GLuint floorTexture;
 GLuint ceilingTexture;
 GLuint skullTexture;
 GLuint altarTexture;
 GLuint catTexture;
+
+std::vector<std::unique_ptr<CollidableObj>> GameObjects;
+std::vector<std::unique_ptr<CollidableObj>> heldGameObjects;
+std::vector<std::unique_ptr<PointLightSource>> StationaryPointLightSourcess;
+std::vector<std::unique_ptr<ConeLightSource>> StatonaryConeLightSources;
 
 std::vector<float> cone_light_loc_vec;
 
@@ -206,23 +200,15 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
 GLuint readTexture(const char *filename) {
   GLuint tex;
   glActiveTexture(GL_TEXTURE0);
-
-  // Wczytanie do pamięci komputera
-  std::vector<unsigned char> image; // Alokuj wektor do wczytania obrazka
-  unsigned width, height; // Zmienne do których wczytamy wymiary obrazka
-  // Wczytaj obrazek
+  std::vector<unsigned char> image;
+  unsigned width, height;
   unsigned error = lodepng::decode(image, width, height, filename);
-
-  // Import do pamięci karty graficznej
-  glGenTextures(1, &tex);            // Zainicjuj jeden uchwyt
-  glBindTexture(GL_TEXTURE_2D, tex); // Uaktywnij uchwyt
-  // Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
+  glGenTextures(1, &tex);
+  glBindTexture(GL_TEXTURE_2D, tex);
   glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                (unsigned char *)image.data());
-
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
   return tex;
 }
 
@@ -311,19 +297,15 @@ void setupInitialPositionsOfObjects(GameMap &map) {
   }
 }
 
-// Procedura rysująca zawartość sceny
 void drawScene(GLFWwindow *window) {
-  //************Tutaj umieszczaj kod rysujący obraz******************l
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glm::mat4 V = camera_ptr->calcViewMatrix();
-
-  glm::mat4 P = glm::perspective(50.0f * PI / 180.0f, aspectRatio, 0.01f,
-                                 50.0f); // Wylicz macierz rzutowania
-
+  glm::mat4 P =
+      glm::perspective(50.0f * PI / 180.0f, aspectRatio, 0.01f, 50.0f);
   glm::mat4 M = glm::mat4(1.0f);
 
-  sp->use(); // Aktywacja programu cieniującego
+  sp->use();
 
   glUniformMatrix4fv(sp->u("P"), 1, false, glm::value_ptr(P));
   glUniformMatrix4fv(sp->u("V"), 1, false, glm::value_ptr(V));
@@ -341,44 +323,28 @@ void drawScene(GLFWwindow *window) {
     if (!is_floor && distance > 7.0f)
       continue;
 
-    std::cout << typeid(*obj).name() << std::endl;
-    std::cout << distance << std::endl;
-    // print type
-
     obj->draw(M, sp);
   }
 
-  // draw held objects - those moving with the cam
-  int number_of_held = heldGameObjects.size();
-  int i = 0;
-  for (auto &obj : heldGameObjects) {
-    // print type
-    // std::cout << "held: " << typeid(*obj).name() << std::endl;
-
+  for (int i = 0; i < heldGameObjects.size(); i++) {
     glm::mat4 M2 = glm::translate(M, camera_ptr->getCamPos());
     float angle = glm::radians(-1 * camera_ptr->getAngles().y);
 
     M2 = glm::rotate(M2, angle + 1.4f + -0.6f * i, glm::vec3(0.f, 1.f, 0.f));
     M2 = glm::translate(M2, glm::vec3(0.2f, -0.4f, 0.4f));
     M2 = glm::scale(M2, glm::vec3(0.5));
-    // rotate the sceond skull to face inwards
     M2 = glm::rotate(M2, glm::radians(180.f), glm::vec3(0.f, 1.f, 0.f));
 
-    obj->draw(M2, sp);
-
-    i++;
+    heldGameObjects[i]->draw(M2, sp);
   }
 
-  glfwSwapBuffers(window); // Przerzuć tylny bufor na przedni
+  glfwSwapBuffers(window);
 }
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
-    fprintf(stderr, "Nie podano nazwy pliku z mapą.\n");
-    exit(EXIT_FAILURE);
-  }
+  std::string map_name = argc != 2 ? "example" : argv[1];
+  std::string map_path = "maps/" + map_name + ".map";
 
-  std::string map_path = "maps/" + std::string(argv[1]) + ".map";
   auto map = (new MapLoader(map_path))->load_map();
   if (!map.has_value()) {
     fprintf(stderr, "Nie można załadować mapy.\n");
@@ -388,22 +354,18 @@ int main(int argc, char **argv) {
   std::cout << "Mapa załadowana poprawnie." << std::endl;
   std::cout << map->pretty_print() << std::endl;
 
-  // Try to load
-  GLFWwindow *window; // Wskaźnik na obiekt reprezentujący okno
+  GLFWwindow *window;
 
-  glfwSetErrorCallback(error_callback); // Zarejestruj procedurę obsługi błędów
+  glfwSetErrorCallback(error_callback);
 
-  if (!glfwInit()) { // Zainicjuj bibliotekę GLFW
+  if (!glfwInit()) {
     fprintf(stderr, "Nie można zainicjować GLFW.\n");
     exit(EXIT_FAILURE);
   }
 
-  window = glfwCreateWindow(
-      INITAL_WIDTH, INITIAL_HEIGHT, "OpenGL", NULL,
-      NULL); // Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
+  window = glfwCreateWindow(INITAL_WIDTH, INITIAL_HEIGHT, "OpenGL", NULL, NULL);
 
-  if (!window) // Jeżeli okna nie udało się utworzyć, to zamknij program
-  {
+  if (!window) {
     fprintf(stderr, "Nie można utworzyć okna.\n");
     glfwTerminate();
     exit(EXIT_FAILURE);
@@ -414,38 +376,28 @@ int main(int argc, char **argv) {
   camera_ptr->moveCam(glm::vec3(0.f, 0.4f, 0.f));
   camera_ptr->setFloorLevel(0.4f);
 
-  glfwMakeContextCurrent(
-      window); // Od tego momentu kontekst okna staje się aktywny i polecenia
-               // OpenGL będą dotyczyć właśnie jego.
-  glfwSwapInterval(
-      1); // Czekaj na 1 powrót plamki przed pokazaniem ukrytego bufora
+  glfwMakeContextCurrent(window);
+  glfwSwapInterval(1);
 
-  if (glewInit() != GLEW_OK) { // Zainicjuj bibliotekę GLEW
+  if (glewInit() != GLEW_OK) {
     fprintf(stderr, "Nie można zainicjować GLEW.\n");
     exit(EXIT_FAILURE);
   }
 
-  initOpenGLProgram(window); // Operacje inicjujące
+  initOpenGLProgram(window);
 
   setupInitialPositionsOfObjects(map.value());
 
-  // Główna pętla
-  glfwSetTime(0); // Zeruj timer
-  while (!glfwWindowShouldClose(
-      window)) // Tak długo jak okno nie powinno zostać zamknięte
-  {
+  glfwSetTime(0);
+  while (!glfwWindowShouldClose(window)) {
     camera_ptr->update(glfwGetTime(), movement_mask, walk_speed, GameObjects);
-
-    glfwSetTime(0);    // Zeruj timer
-    drawScene(window); // Wykonaj procedurę rysującą
-
-    glfwPollEvents(); // Wykonaj procedury callback w zalezności od zdarzeń
-                      // jakie zaszły.
+    glfwSetTime(0);
+    drawScene(window);
+    glfwPollEvents();
   }
 
   freeOpenGLProgram(window);
-
-  glfwDestroyWindow(window); // Usuń kontekst OpenGL i okno
-  glfwTerminate();           // Zwolnij zasoby zajęte przez GLFW
+  glfwDestroyWindow(window);
+  glfwTerminate();
   exit(EXIT_SUCCESS);
 }
