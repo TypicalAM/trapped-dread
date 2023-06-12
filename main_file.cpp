@@ -247,11 +247,11 @@ void initOpenGLProgram(GLFWwindow *window) {
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-  catTexture = readTexture("tiger.png");
-  altarTexture = readTexture("altar_diff.png");
-  skullTexture = readTexture("marble_diff.png");
-  floorTexture = readTexture("floor_diff.png");
-  wallTexture = readTexture("wall_diff.png");
+  catTexture = readTexture("textures/cat.png");
+  altarTexture = readTexture("textures/altar.png");
+  skullTexture = readTexture("textures/marble.png");
+  floorTexture = readTexture("textures/floor.png");
+  wallTexture = readTexture("textures/wall.png");
 
   sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 }
