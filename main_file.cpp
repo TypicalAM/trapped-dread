@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "MapLoader.h"
 #include <algorithm>
+#include <glm/detail/qualifier.hpp>
 #include <glm/fwd.hpp>
 #include <iterator>
 #include <map>
@@ -92,15 +93,9 @@ bool can_grab_skull() {
       continue;
     }
 
-    // We get the color from old skull, create a new one for the hand
-    // and delete the old one, the pointer to which will be freed
-    // because of going out of scope
-
-    // btw chyba wystarczy zrobic move
-    // heldGameObjects.push_back(std::move(GameObjects[i])); -- move kradnie
-    // tamten obiekt i wektor juz se go usunie - chyba
-    SkullColor color = dynamic_cast<Skull *>(GameObjects[i].get())->get_color();
-    heldGameObjects.push_back(std::make_unique<Skull>(0, 0, color));
+    // Move the skull from the map to the player's hand
+    heldGameObjects.push_back(std::move(GameObjects[i]));
+    heldGameObjects.back()->set_pos(glm::vec3(0, SKULL_OFFSET_Y, 0));
     GameObjects.erase(GameObjects.begin() + i);
     return true;
   }
@@ -128,10 +123,9 @@ bool can_place_skull() {
     if ((altar->get_color() == RED_ALTAR && skull->get_color() == RED_SKULL) ||
         (altar->get_color() == BLUE_ALTAR &&
          skull->get_color() == BLUE_SKULL)) {
-      skull->get_color() == BLUE_SKULL ? camera_ptr->place_blue_skull()
-                                       : camera_ptr->place_red_skull();
-      GameObjects.push_back(std::make_unique<Skull>(
-          altar_pos.first, altar_pos.second, skull->get_color()));
+      GameObjects.push_back(std::move(heldGameObjects[0]));
+      GameObjects.back()->set_pos(
+          glm::vec3(altar_pos.first, SKULL_OFFSET_Y, altar_pos.second));
       heldGameObjects.erase(heldGameObjects.begin());
       return true;
     }
@@ -145,8 +139,9 @@ bool can_place_skull() {
          skull2->get_color() == BLUE_SKULL)) {
       skull2->get_color() == BLUE_SKULL ? camera_ptr->place_blue_skull()
                                         : camera_ptr->place_red_skull();
-      GameObjects.push_back(std::make_unique<Skull>(
-          altar_pos.first, altar_pos.second, skull2->get_color()));
+      GameObjects.push_back(std::move(heldGameObjects[1]));
+      GameObjects.back()->set_pos(
+          glm::vec3(altar_pos.first, SKULL_OFFSET_Y, altar_pos.second));
       heldGameObjects.erase(heldGameObjects.begin() + 1);
       return true;
     }

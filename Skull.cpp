@@ -4,9 +4,6 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
-#define SKULL_SCALAR glm::vec3(0.2f, 0.2f, 0.2f)
-#define SKULL_OFFSET_Y 0.44F
-
 void Skull::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
   glm::mat4 M3 = glm::scale(M2, SKULL_SCALAR);

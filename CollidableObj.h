@@ -57,4 +57,6 @@ public:
   virtual void bindTexture(GLuint texture) { m_texture = texture; }
 
   glm::vec3 get_pos() { return m_position; }
+
+  void set_pos(glm::vec3 new_pos) { m_position = new_pos; }
 };

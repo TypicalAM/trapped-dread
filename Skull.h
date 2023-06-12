@@ -4,6 +4,9 @@
 #include <glm/fwd.hpp>
 #include <vector>
 
+#define SKULL_SCALAR glm::vec3(0.2f, 0.2f, 0.2f)
+#define SKULL_OFFSET_Y 0.44F
+
 enum SkullColor { BLUE_SKULL, RED_SKULL };
 
 class Skull : public CollidableObj {

@@ -106,7 +106,7 @@ void Player::update(
   for (auto &other_obj : other_objs) {
 
     if (other_obj->hasColided(m_cam_pos)) {
-      // std::cout << "inside " << typeid(*other_obj).name() << std::endl;
+      std::cout << "inside " << typeid(*other_obj).name() << std::endl;
       if (typeid(*other_obj) == typeid(Exit))
         if (placed_blue_skull && placed_red_skull)
           return toggle_fly();

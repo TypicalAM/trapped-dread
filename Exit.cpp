@@ -49,7 +49,7 @@ bool Exit::hasColided(const glm::vec3 &other_pos) {
 
 Exit::Exit(int x_pos, int y_pos)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
-                    glm::vec3(1, 1, 1)) {
+                    glm::vec3(0.5, 0.7, 0.5)) {
   this->m_position = glm::vec3(x_pos + -0.1f, EXIT_OFFSET_Y, y_pos + 0.0f);
   this->x_pos = x_pos;
   this->y_pos = y_pos;
