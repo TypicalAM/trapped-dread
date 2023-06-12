@@ -71,23 +71,17 @@ GLuint floorTexture;
 GLuint ceilingTexture;
 GLuint skullTexture;
 GLuint altarTexture;
+GLuint catTexture;
 
 std::vector<float> cone_light_loc_vec;
 
 float cone_light_loc[] = {
-   3, 1, 5, 1,
-   1, -1, 0, 1,
-   2, -1, 0, 1,
-   3, -1, 2, 1,
+    3, 1, 5, 1, 1, -1, 0, 1, 2, -1, 0, 1, 3, -1, 2, 1,
 };
 
 float cone_light_colors[] = {
-  1, 1, 1, 1,
-  1, 0, 0, 1,
-  0, 1, 0, 1,
-  0, 0, 1, 1,
+    1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1,
 };
-
 
 // Check if we can grab a skull and grab it
 bool can_grab_skull() {
@@ -103,7 +97,8 @@ bool can_grab_skull() {
     // because of going out of scope
 
     // btw chyba wystarczy zrobic move
-    // heldGameObjects.push_back(std::move(GameObjects[i])); -- move kradnie tamten obiekt i wektor juz se go usunie - chyba
+    // heldGameObjects.push_back(std::move(GameObjects[i])); -- move kradnie
+    // tamten obiekt i wektor juz se go usunie - chyba
     SkullColor color = dynamic_cast<Skull *>(GameObjects[i].get())->get_color();
     heldGameObjects.push_back(std::make_unique<Skull>(0, 0, color));
     GameObjects.erase(GameObjects.begin() + i);
@@ -271,10 +266,11 @@ void initOpenGLProgram(GLFWwindow *window) {
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-  altarTexture = readTexture("tiger.png");
-  skullTexture = readTexture("tiger.png");
+  catTexture = readTexture("tiger.png");
+  altarTexture = readTexture("altar_diff.png");
+  skullTexture = readTexture("marble_diff.png");
   floorTexture = readTexture("floor_diff.png");
-  wallTexture = readTexture("wall_diffuse.png");
+  wallTexture = readTexture("wall_diff.png");
 
   sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
 }
@@ -290,36 +286,35 @@ void freeOpenGLProgram(GLFWwindow *window) {
 
 // alters global `GameObjects`
 void setupInitialPositionsOfObjects(GameMap &map) {
-    auto floor = map.gen_floor();
-    floor->bindTexture(floorTexture);
-    GameObjects.push_back(std::move(floor));
+  auto floor = map.gen_floor();
+  floor->bindTexture(floorTexture);
+  GameObjects.push_back(std::move(floor));
 
-    auto exit = map.gen_exit();
-    exit->bindTexture(floorTexture);
-    GameObjects.push_back(std::move(exit));
-  
-  for (auto& wall : map.gen_walls()) {
-      wall->bindTexture(wallTexture);
-      GameObjects.push_back(std::move(wall));
+  auto exit = map.gen_exit();
+  exit->bindTexture(catTexture);
+  GameObjects.push_back(std::move(exit));
+
+  for (auto &wall : map.gen_walls()) {
+    wall->bindTexture(wallTexture);
+    GameObjects.push_back(std::move(wall));
   }
-  for (auto& altars : map.gen_altars()) {
-      if (typeid(*altars) == typeid(Skull)) {
-          altars->bindTexture(skullTexture);
-      }
-      else{
-          altars->bindTexture(altarTexture);
-          auto pos = altars->get_pos();
-		  // ustaw pozycje swiatła
-          cone_light_loc_vec.push_back(pos.x);
-          cone_light_loc_vec.push_back(-1.0f);
-          cone_light_loc_vec.push_back(pos.z);
-          cone_light_loc_vec.push_back(1.0f);
-      }
-      GameObjects.push_back(std::move(altars));
+
+  for (auto &altars : map.gen_altars()) {
+    if (typeid(*altars) == typeid(Skull)) {
+      altars->bindTexture(skullTexture);
+    } else {
+      altars->bindTexture(altarTexture);
+      auto pos = altars->get_pos();
+      // ustaw pozycje swiatła
+      cone_light_loc_vec.push_back(pos.x);
+      cone_light_loc_vec.push_back(-1.0f);
+      cone_light_loc_vec.push_back(pos.z);
+      cone_light_loc_vec.push_back(1.0f);
+    }
+
+    GameObjects.push_back(std::move(altars));
   }
 }
-
-
 
 // Procedura rysująca zawartość sceny
 void drawScene(GLFWwindow *window) {
@@ -341,13 +336,8 @@ void drawScene(GLFWwindow *window) {
   glUniform1f(sp->u("cutoffin"), 0.9f);
   glUniform1f(sp->u("cutoffout"), 0.8f);
 
-
   glUniform4fv(sp->u("coneLightpositions"), 4, cone_light_loc_vec.data());
   glUniform4fv(sp->u("coneLightcolors"), 4, cone_light_colors);
-
-  
-  
-
 
   // draw all the game objects
   // for now just floor

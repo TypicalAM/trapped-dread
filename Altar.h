@@ -2,6 +2,7 @@
 
 #include "CollidableObj.h"
 #include <glm/fwd.hpp>
+#include <vector>
 
 enum AltarType { START, END };
 enum AltarColor { BLUE_ALTAR, RED_ALTAR };
@@ -13,11 +14,11 @@ private:
   int x_pos;
   int y_pos;
 
-  float *verticesArray;
-  float *normalsArray;
-  float *texCoordsArray;
-  float *colorsArray;
-  size_t numVertices;
+  std::vector<glm::vec4> vertices;
+  std::vector<glm::vec4> colors;
+  std::vector<glm::vec4> normals;
+  std::vector<glm::vec2> texCoords;
+  unsigned int numVertices;
 
 public:
   Altar(int x_pos, int y_pos, AltarType type, AltarColor color);

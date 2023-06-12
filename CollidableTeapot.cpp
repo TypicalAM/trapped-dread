@@ -1,5 +1,5 @@
-﻿//#include "CollidableTeapot.h"
-//#include <iostream>
+﻿// #include "CollidableTeapot.h"
+// #include <iostream>
 //
 #if 0
 void CollidableTeapot::draw(const glm::mat4& baseM, ShaderProgram* sp) {

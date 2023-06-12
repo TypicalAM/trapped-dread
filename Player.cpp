@@ -124,7 +124,6 @@ void Player::update(
 
       m_cam_pos = updated_pos;
     }
-    
   }
 }
 

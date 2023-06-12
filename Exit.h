@@ -1,18 +1,20 @@
 #pragma once
 
 #include "CollidableObj.h"
+#include <assimp/vector3.h>
 #include <glm/fwd.hpp>
+#include <vector>
 
 class Exit : public CollidableObj {
 private:
   int x_pos;
   int y_pos;
 
-  float *verticesArray;
-  float *normalsArray;
-  float *texCoordsArray;
-  float *colorsArray;
-  size_t numVertices;
+  std::vector<glm::vec4> vertices;
+  std::vector<glm::vec4> colors;
+  std::vector<glm::vec4> normals;
+  std::vector<glm::vec2> texCoords;
+  unsigned int numVertices;
 
 public:
   Exit(int x_pos, int y_pos);

@@ -2,6 +2,7 @@
 
 #include "CollidableObj.h"
 #include <glm/fwd.hpp>
+#include <vector>
 
 enum SkullColor { BLUE_SKULL, RED_SKULL };
 
@@ -11,11 +12,11 @@ private:
   int y_pos;
   SkullColor color;
 
-  float *verticesArray;
-  float *normalsArray;
-  float *texCoordsArray;
-  float *colorsArray;
-  size_t numVertices;
+  std::vector<glm::vec4> vertices;
+  std::vector<glm::vec4> colors;
+  std::vector<glm::vec4> normals;
+  std::vector<glm::vec2> texCoords;
+  unsigned int numVertices;
 
 public:
   Skull(int x_pos, int y_pos, SkullColor color);
