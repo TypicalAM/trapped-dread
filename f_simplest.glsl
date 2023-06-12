@@ -19,7 +19,7 @@ in float outer_cutoff;
 in float icDist;
 
 
-float quadratic  = 0.032f;
+float quadratic  = 0.32f;
 float linear  = 0.09f;
 
 
