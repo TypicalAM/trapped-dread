@@ -7,7 +7,7 @@
 void Skull::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
   glm::mat4 M3 = glm::scale(M2, SKULL_SCALAR);
-
+  return;
   glUniformMatrix4fv(sp->u("M"), 1, false, glm::value_ptr(M3));
   glEnableVertexAttribArray(sp->a("vertex"));
   glVertexAttribPointer(sp->a("vertex"), 4, GL_FLOAT, false, 0, verticesArray);

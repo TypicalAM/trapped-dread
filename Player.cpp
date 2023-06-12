@@ -124,41 +124,7 @@ void Player::update(
 
       m_cam_pos = updated_pos;
     }
-    /*
-    Collisions cols = other_obj->calc_colision(m_cam_pos);
-
-    std::cout << typeid(*other_obj).name() << "  " << cols[0].first << " "
-              << cols[0].second << " " << cols[1].first << " " << cols[1].second
-              << " " << cols[2].first << " " << cols[2].second << std::endl;
-
-    // Let's check if we are 'inside the object' without considering the Y-level
-    if (cols[0].first && cols[0].second && cols[2].first && cols[2].second) {
-      std::cout << "Inside XZ boundry!" << std::endl;
-
-      // Now if we are on top of the object, everything is all right
-      if (cols[1].first && cols[1].second) {
-        std::cout << "On top!" << std::endl;
-        m_cam_pos.y = old_cam_pos.y;
-        vertical_velocity = 0.0f;
-        is_on_floor = true;
-        continue;
-      }
-
-      // If we are bonking our head, we need to reverse the vertical velocity
-      else if (!cols[1].first && cols[1].second) {
-        std::cout << "Bonked head!" << std::endl;
-        m_cam_pos.y = old_cam_pos.y;
-        vertical_velocity *= -1;
-        continue;
-      }
-
-
-      // Otherwise, we are inside the object, so we need to move out of it
-      std::cout << "Fuck you, can't move!" << std::endl;
-      m_cam_pos.x = old_cam_pos.x;
-      m_cam_pos.z = old_cam_pos.z;
-    }
-    */
+    
   }
 }
 
