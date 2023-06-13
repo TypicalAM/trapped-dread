@@ -62,16 +62,15 @@ bool MapLoader::file_correct() {
       if (i == 0) {
         for (int k = 0; k < dimensions[0]; k++) {
           if (line[k] == 'S') {
-            if (first_floor_has_start) {
-              std::cout << "Pierwszy start" << std::endl;
+            if (first_floor_has_start)
               return false;
-            }
+
             first_floor_has_start = true;
           } else if (line[k] == 'E') {
-            if (first_floor_has_end) {
-              std::cout << "Pierwszy end" << std::endl;
-              return false;
-            }
+            // This is commented so we can jump on cats!
+            // if (first_floor_has_end)
+            //  return false;
+
             first_floor_has_end = true;
           }
         }

@@ -327,7 +327,7 @@ void drawScene(GLFWwindow *window) {
 
 int main(int argc, char **argv) {
   std::string map_name = argc != 2 ? "example" : argv[1];
-  std::string map_path = "maps/" + map_name + ".map";
+  std::string map_path = "assets/maps/" + map_name + ".map";
 
   auto map = (new MapLoader(map_path))->load_map();
   if (!map.has_value()) {

@@ -47,7 +47,7 @@ Exit::Exit(int x_pos, int y_pos)
 
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(
-      "models/cat.obj",
+      "assets/models/cat.obj",
       aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals);
 
   if (!scene->HasMeshes())

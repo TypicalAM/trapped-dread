@@ -52,7 +52,7 @@ Altar::Altar(int x_pos, int y_pos, AltarType type, Color color)
 
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(
-      "models/altar_old.obj",
+      "assets/models/altar_old.obj",
       aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals);
 
   if (!scene->HasMeshes())

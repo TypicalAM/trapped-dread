@@ -49,7 +49,7 @@ Skull ::Skull(int x_pos, int y_pos, Color color)
 
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(
-      "models/skull.obj",
+      "assets/models/skull.obj",
       aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals);
 
   if (!scene->HasMeshes())
