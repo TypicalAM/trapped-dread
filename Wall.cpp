@@ -35,24 +35,6 @@ void Wall::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glDisableVertexAttribArray(sp->a("TexCoord0"));
 }
 
-bool Wall::hasColided(const glm::vec3 &other_pos) {
-  glm::vec3 diff = m_position - other_pos;
-  std::cout << "start of hasColided" << std::endl;
-  std::cout << "diff: " << diff.x << " " << diff.y << " " << diff.z
-            << std::endl;
-  std::cout << "m_bounding_box_radius: " << m_bounding_box_radius.x << " "
-            << m_bounding_box_radius.y << " " << m_bounding_box_radius.z
-            << std::endl;
-
-  // Wall has a bounding box from -0.5 to 0.5 in all directions
-  return diff.x >= -m_bounding_box_radius.x &&
-         diff.x <= m_bounding_box_radius.x &&
-         diff.y >= -m_bounding_box_radius.y &&
-         diff.y <= m_bounding_box_radius.y &&
-         diff.z >= -m_bounding_box_radius.z &&
-         diff.z <= m_bounding_box_radius.z;
-}
-
 Wall::Wall(int x_pos, int y_pos, int layer)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
                     glm::vec3(0.7, 1, 0.7)) {

@@ -3,6 +3,8 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <cstdlib>
+#include <iostream>
+#include <ostream>
 
 #define EXIT_SCALAR glm::vec3(0.05f, 0.05f, 0.05f)
 #define EXIT_OFFSET_Y 0.0F
@@ -34,16 +36,6 @@ void Exit::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glDisableVertexAttribArray(sp->a("color"));
   glDisableVertexAttribArray(sp->a("normal"));
   glDisableVertexAttribArray(sp->a("TexCoord0"));
-}
-
-bool Exit::hasColided(const glm::vec3 &other_pos) {
-  glm::vec3 diff = m_position - other_pos;
-  return diff.x >= -m_bounding_box_radius.x &&
-         diff.x <= m_bounding_box_radius.x &&
-         diff.y >= -m_bounding_box_radius.y &&
-         diff.y <= m_bounding_box_radius.y &&
-         diff.z >= -m_bounding_box_radius.z &&
-         diff.z <= m_bounding_box_radius.z;
 }
 
 Exit::Exit(int x_pos, int y_pos)

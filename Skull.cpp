@@ -32,21 +32,16 @@ void Skull::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glDisableVertexAttribArray(sp->a("TexCoord0"));
 }
 
-bool Skull::hasColided(const glm::vec3 &other_pos) { return false; }
-
 bool Skull::can_grab(const glm::vec3 &player_pos) {
   glm::vec3 diff = m_position - player_pos;
-  return diff.x >= -m_bounding_box_radius.x &&
-         diff.x <= m_bounding_box_radius.x &&
-         diff.y >= -m_bounding_box_radius.y &&
-         diff.y <= m_bounding_box_radius.y &&
-         diff.z >= -m_bounding_box_radius.z &&
-         diff.z <= m_bounding_box_radius.z;
+  return diff.x >= -SKULL_GRAB_BOX.x && diff.x <= SKULL_GRAB_BOX.x &&
+         diff.y >= -SKULL_GRAB_BOX.y && diff.y <= SKULL_GRAB_BOX.y &&
+         diff.z >= -SKULL_GRAB_BOX.z && diff.z <= SKULL_GRAB_BOX.z;
 }
 
 Skull ::Skull(int x_pos, int y_pos, SkullColor color)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
-                    glm::vec3(1, 1, 1)) {
+                    glm::vec3(0.01, 0.01, 0.01)) {
   this->x_pos = x_pos;
   this->y_pos = y_pos;
   this->m_position = glm::vec3(x_pos, SKULL_OFFSET_Y, y_pos);

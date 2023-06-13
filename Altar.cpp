@@ -5,9 +5,6 @@
 #include <assimp/scene.h>
 #include <iostream>
 
-#define ALTAR_SCALAR glm::vec3(0.1f, 0.05f, 0.1f)
-#define ALTAR_OFFSET_Y -0.01f
-
 void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glm::mat4 M2 = glm::translate(baseM, m_position);
   glm::mat4 M3 = glm::scale(M2, ALTAR_SCALAR);
@@ -37,29 +34,16 @@ void Altar::draw(const glm::mat4 &baseM, ShaderProgram *sp) {
   glDisableVertexAttribArray(sp->a("TexCoord0"));
 }
 
-bool Altar::hasColided(const glm::vec3 &other_pos) {
-  // TODO: the bounding box has to be smaller
-  // than the placing box
-  return false;
-}
-
 bool Altar::can_place_skull(const glm::vec3 &player_pos) {
   glm::vec3 diff = m_position - player_pos;
-  return diff.x >= -m_bounding_box_radius.x &&
-         diff.x <= m_bounding_box_radius.x &&
-         diff.y >= -m_bounding_box_radius.y &&
-         diff.y <= m_bounding_box_radius.y &&
-         diff.z >= -m_bounding_box_radius.z &&
-         diff.z <= m_bounding_box_radius.z;
-
-  std::cout << "can place skull" << std::endl;
-  std::cout << hasColided(player_pos) << std::endl;
-  return hasColided(player_pos);
+  return diff.x >= -ALTAR_PLACE_BOX.x && diff.x <= ALTAR_PLACE_BOX.x &&
+         diff.y >= -ALTAR_PLACE_BOX.y && diff.y <= ALTAR_PLACE_BOX.y &&
+         diff.z >= -ALTAR_PLACE_BOX.z && diff.z <= ALTAR_PLACE_BOX.z;
 }
 
 Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
-                    glm::vec3(1, 1, 1)) {
+                    glm::vec3(0.3, 0.5, 0.3)) {
   this->m_position = glm::vec3(x_pos, ALTAR_OFFSET_Y, y_pos);
   this->type = type;
   this->color = color;

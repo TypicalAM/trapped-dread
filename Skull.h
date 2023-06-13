@@ -5,7 +5,8 @@
 #include <vector>
 
 #define SKULL_SCALAR glm::vec3(0.2f, 0.2f, 0.2f)
-#define SKULL_OFFSET_Y 0.44F
+#define SKULL_OFFSET_Y 0.44f
+const glm::vec3 SKULL_GRAB_BOX(0.5f, 0.5f, 0.5f);
 
 enum SkullColor { BLUE_SKULL, RED_SKULL };
 
@@ -25,7 +26,6 @@ public:
   Skull(int x_pos, int y_pos, SkullColor color);
   ~Skull() {}
   void draw(const glm::mat4 &baseM, ShaderProgram *sp) override;
-  bool hasColided(const glm::vec3 &other_pos) override;
   bool can_grab(const glm::vec3 &player_pos) override;
   SkullColor get_color() { return color; }
 };
