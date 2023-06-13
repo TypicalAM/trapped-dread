@@ -50,7 +50,7 @@ void main(void) {
     for (int i = 0; i < 4; i++) {
 		coneLights_l[i] = normalize(V*coneLightpositions[i] - V*M*vertex); // wektor do swiatla
         coneLights_cols[i] = coneLightcolors[i] * color_mult;
-	}
+	  }
 
 
     // swiatlo
@@ -64,8 +64,3 @@ void main(void) {
     
     gl_Position=P*V*M*vertex;
 }
-/*
-void x(void) {
-    
-}
-*/

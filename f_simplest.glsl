@@ -71,8 +71,5 @@ void main(void) {
 		}
 	}
 
-
-	
-
 	pixelColor = vec4(my_output, kd.a);
 }
