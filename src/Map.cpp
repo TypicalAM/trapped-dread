@@ -1,9 +1,9 @@
-#include "Map.h"
-#include "Altar.h"
-#include "Exit.h"
-#include "Floor.h"
-#include "Skull.h"
-#include "Wall.h"
+#include "../include/Map.h"
+#include "../include/Altar.h"
+#include "../include/Exit.h"
+#include "../include/Floor.h"
+#include "../include/Skull.h"
+#include "../include/Wall.h"
 #include <algorithm>
 #include <sstream>
 

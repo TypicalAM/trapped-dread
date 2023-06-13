@@ -1,20 +1,20 @@
-#include "Altar.h"
-#include "Map.h"
-#include "MapLoader.h"
+#include "../include/Altar.h"
+#include "../include/Map.h"
+#include "../include/MapLoader.h"
 #include <algorithm>
 
 #include <memory>
 #include <vector>
 
-#include "constants.h"
-#include "lodepng.h"
-#include "shaderprogram.h"
+#include "../include/Constants.h"
+#include "../include/Lodepng.h"
+#include "../include/Shaderprogram.h"
 
-#include "Floor.h"
-#include "LightSource.h"
-#include "Player.h"
-#include "Skull.h"
-#include "common.h"
+#include "../include/Floor.h"
+#include "../include/LightSource.h"
+#include "../include/Player.h"
+#include "../include/Skull.h"
+#include "../include/Common.h"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_SWIZZLE
@@ -227,7 +227,7 @@ void initOpenGLProgram(GLFWwindow *window) {
   floorTexture = readTexture("assets/textures/floor.png");
   wallTexture = readTexture("assets/textures/wall.png");
 
-  sp = new ShaderProgram("v_simplest.glsl", NULL, "f_simplest.glsl");
+  sp = new ShaderProgram("assets/shaders/v_simplest.glsl", NULL, "assets/shaders/f_simplest.glsl");
 }
 
 // Zwolnienie zasobów zajętych przez program

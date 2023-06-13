@@ -1,6 +1,6 @@
 #pragma once
-#include "common.h"
-#include "shaderprogram.h"
+#include "Common.h"
+#include "Shaderprogram.h"
 #include <array>
 #include <iostream>
 

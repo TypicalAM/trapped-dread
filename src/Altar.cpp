@@ -1,5 +1,5 @@
-﻿#include "Altar.h"
-#include "CollidableObj.h"
+﻿#include "../include/Altar.h"
+#include "../include/CollidableObj.h"
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>

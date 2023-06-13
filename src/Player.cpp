@@ -1,8 +1,8 @@
-#include "Player.h"
-#include "CollidableObj.h"
-#include "Exit.h"
-#include "Wall.h"
-#include "common.h"
+#include "../include/Player.h"
+#include "../include/CollidableObj.h"
+#include "../include/Common.h"
+#include "../include/Exit.h"
+#include "../include/Wall.h"
 
 #include <iostream>
 

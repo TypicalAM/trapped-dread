@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CollidableObj.h"
-#include "common.h"
+#include "Common.h"
 
 class Floor : public CollidableObj {
 private:

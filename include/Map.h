@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Altar.h"
-#include "CollidableObj.h"
-#include "Exit.h"
-#include "Floor.h"
-#include "Skull.h"
-#include "Wall.h"
+#include "../include/Altar.h"
+#include "../include/CollidableObj.h"
+#include "../include/Exit.h"
+#include "../include/Floor.h"
+#include "../include/Skull.h"
+#include "../include/Wall.h"
 #include <algorithm>
 #include <glm/fwd.hpp>
 #include <memory>

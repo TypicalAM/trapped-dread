@@ -1,4 +1,4 @@
-#include "CollidableObj.h"
+#include "../include/CollidableObj.h"
 #include <iostream>
 
 glm::mat4 CollidableObj::calc_base_M(const glm::mat4 &baseM) {

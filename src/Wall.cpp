@@ -1,6 +1,6 @@
-#include "Wall.h"
-#include "CollidableObj.h"
-#include "Cube.h"
+#include "../include/Wall.h"
+#include "../include/CollidableObj.h"
+#include "../include/Cube.h"
 #include <array>
 #include <iostream>
 

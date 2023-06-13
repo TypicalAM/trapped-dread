@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CollidableObj.h"
-#include "common.h"
+#include "../include/CollidableObj.h"
+#include "../include/Common.h"
 #include <vector>
 
 #define ALTAR_SCALAR glm::vec3(0.1f, 0.05f, 0.1f)
