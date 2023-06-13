@@ -2,23 +2,8 @@
 #include "Map.h"
 #include "MapLoader.h"
 #include <algorithm>
-#include <glm/detail/qualifier.hpp>
-#include <glm/fwd.hpp>
-#include <iterator>
-#include <map>
-#include <optional>
-#include <ostream>
-#include <string>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <iostream>
 #include <memory>
-#include <stdio.h>
-#include <stdlib.h>
 #include <vector>
 
 #include "constants.h"
@@ -68,15 +53,8 @@ std::vector<std::unique_ptr<CollidableObj>> heldGameObjects;
 std::vector<std::unique_ptr<PointLightSource>> StationaryPointLightSourcess;
 std::vector<std::unique_ptr<ConeLightSource>> StatonaryConeLightSources;
 
-std::vector<float> cone_light_loc_vec;
-
-float cone_light_loc[] = {
-    3, 1, 5, 1, 1, -1, 0, 1, 2, -1, 0, 1, 3, -1, 2, 1,
-};
-
-float cone_light_colors[] = {
-    1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1,
-};
+std::vector<float> cone_light_loc;
+std::vector<float> cone_light_colors;
 
 // Check if we can grab a skull and grab it
 bool can_grab_skull() {
@@ -108,18 +86,16 @@ bool can_place_skull() {
 
     std::cout << "we can place an object" << std::endl;
     auto altar = dynamic_cast<Altar *>(GameObjects[i].get());
-    if (altar->get_type() != END)
+    if (altar->get_type() != ALTAR_END)
       continue;
 
     auto altar_pos = altar->get_pos();
     auto skull = dynamic_cast<Skull *>(heldGameObjects[0].get());
 
-    if ((altar->get_color() == RED_ALTAR && skull->get_color() == RED_SKULL) ||
-        (altar->get_color() == BLUE_ALTAR &&
-         skull->get_color() == BLUE_SKULL)) {
+    if (altar->get_color() == skull->get_color()) {
       GameObjects.push_back(std::move(heldGameObjects[0]));
       GameObjects.back()->set_pos(
-          glm::vec3(altar_pos.first, SKULL_OFFSET_Y, altar_pos.second));
+          glm::vec3(altar_pos.x, SKULL_OFFSET_Y, altar_pos.y));
       heldGameObjects.erase(heldGameObjects.begin());
       return true;
     }
@@ -128,14 +104,12 @@ bool can_place_skull() {
       return false;
 
     auto skull2 = dynamic_cast<Skull *>(heldGameObjects[1].get());
-    if ((altar->get_color() == RED_ALTAR && skull2->get_color() == RED_SKULL) ||
-        (altar->get_color() == BLUE_ALTAR &&
-         skull2->get_color() == BLUE_SKULL)) {
-      skull2->get_color() == BLUE_SKULL ? camera_ptr->place_blue_skull()
-                                        : camera_ptr->place_red_skull();
+    if (altar->get_color() == skull2->get_color()) {
+      skull2->get_color() == BLUE ? camera_ptr->place_blue_skull()
+                                  : camera_ptr->place_red_skull();
       GameObjects.push_back(std::move(heldGameObjects[1]));
       GameObjects.back()->set_pos(
-          glm::vec3(altar_pos.first, SKULL_OFFSET_Y, altar_pos.second));
+          glm::vec3(altar_pos.x, SKULL_OFFSET_Y, altar_pos.y));
       heldGameObjects.erase(heldGameObjects.begin() + 1);
       return true;
     }
@@ -280,18 +254,28 @@ void setupInitialPositionsOfObjects(GameMap &map) {
     GameObjects.push_back(std::move(wall));
   }
 
+  for (auto &skull : map.gen_skulls()) {
+    skull->bindTexture(skullTexture);
+    GameObjects.push_back(std::move(skull));
+  }
+
   for (auto &altars : map.gen_altars()) {
-    if (typeid(*altars) == typeid(Skull)) {
-      altars->bindTexture(skullTexture);
-    } else {
-      altars->bindTexture(altarTexture);
-      auto pos = altars->get_pos();
-      // ustaw pozycje swiatła
-      cone_light_loc_vec.push_back(pos.x);
-      cone_light_loc_vec.push_back(-1.0f);
-      cone_light_loc_vec.push_back(pos.z);
-      cone_light_loc_vec.push_back(1.0f);
-    }
+    altars->bindTexture(altarTexture);
+    auto pos = altars->get_pos();
+
+    // set light position
+    cone_light_loc.push_back(pos.x);
+    cone_light_loc.push_back(-1.0f);
+    cone_light_loc.push_back(pos.z);
+    cone_light_loc.push_back(1.0f);
+
+    bool is_red_light = dynamic_cast<Altar *>(altars.get())->get_color() == RED;
+
+    // set light color
+    cone_light_colors.push_back(is_red_light ? 1.0f : 0.0f);
+    cone_light_colors.push_back(0.0f);
+    cone_light_colors.push_back(is_red_light ? 0.0f : 1.0f);
+    cone_light_colors.push_back(1.0f);
 
     GameObjects.push_back(std::move(altars));
   }
@@ -313,8 +297,8 @@ void drawScene(GLFWwindow *window) {
   glUniform1f(sp->u("cutoffin"), 0.9f);
   glUniform1f(sp->u("cutoffout"), 0.8f);
 
-  glUniform4fv(sp->u("coneLightpositions"), 4, cone_light_loc_vec.data());
-  glUniform4fv(sp->u("coneLightcolors"), 4, cone_light_colors);
+  glUniform4fv(sp->u("coneLightpositions"), 4, cone_light_loc.data());
+  glUniform4fv(sp->u("coneLightcolors"), 4, cone_light_colors.data());
 
   auto player_pos = camera_ptr->get_position();
   for (auto &obj : GameObjects) {

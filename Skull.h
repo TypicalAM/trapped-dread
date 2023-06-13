@@ -8,13 +8,11 @@
 #define SKULL_OFFSET_Y 0.44f
 const glm::vec3 SKULL_GRAB_BOX(0.5f, 0.5f, 0.5f);
 
-enum SkullColor { BLUE_SKULL, RED_SKULL };
-
 class Skull : public CollidableObj {
 private:
   int x_pos;
   int y_pos;
-  SkullColor color;
+  Color color;
 
   std::vector<glm::vec4> vertices;
   std::vector<glm::vec4> colors;
@@ -23,9 +21,9 @@ private:
   unsigned int numVertices;
 
 public:
-  Skull(int x_pos, int y_pos, SkullColor color);
+  Skull(int x_pos, int y_pos, Color color);
   ~Skull() {}
   void draw(const glm::mat4 &baseM, ShaderProgram *sp) override;
   bool can_grab(const glm::vec3 &player_pos) override;
-  SkullColor get_color() { return color; }
+  Color get_color() { return color; }
 };

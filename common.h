@@ -25,3 +25,5 @@
 #define MOVE_UP 0x10
 #define MOVE_DOWN 0x20
 #define MOVE_FLY 0x40
+
+enum Color { RED, BLUE };

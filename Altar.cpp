@@ -41,7 +41,7 @@ bool Altar::can_place_skull(const glm::vec3 &player_pos) {
          diff.z >= -ALTAR_PLACE_BOX.z && diff.z <= ALTAR_PLACE_BOX.z;
 }
 
-Altar::Altar(int x_pos, int y_pos, AltarType type, AltarColor color)
+Altar::Altar(int x_pos, int y_pos, AltarType type, Color color)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
                     glm::vec3(0.3, 0.5, 0.3)) {
   this->m_position = glm::vec3(x_pos, ALTAR_OFFSET_Y, y_pos);

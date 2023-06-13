@@ -39,7 +39,7 @@ bool Skull::can_grab(const glm::vec3 &player_pos) {
          diff.z >= -SKULL_GRAB_BOX.z && diff.z <= SKULL_GRAB_BOX.z;
 }
 
-Skull ::Skull(int x_pos, int y_pos, SkullColor color)
+Skull ::Skull(int x_pos, int y_pos, Color color)
     : CollidableObj(glm::vec3(x_pos, 0, y_pos), glm::vec3(0, 0, 0),
                     glm::vec3(0.01, 0.01, 0.01)) {
   this->x_pos = x_pos;

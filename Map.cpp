@@ -5,12 +5,7 @@
 #include "Skull.h"
 #include "Wall.h"
 #include <algorithm>
-#include <cstdio>
-#include <iostream>
-#include <memory>
 #include <sstream>
-#include <string>
-#include <vector>
 
 std::string GameMap::pretty_print() {
   std::stringstream ss;
@@ -86,25 +81,23 @@ std::vector<std::unique_ptr<Wall>> GameMap::gen_walls() {
   return walls;
 }
 
-std::vector<std::unique_ptr<CollidableObj>> GameMap::gen_altars() {
-  std::vector<std::unique_ptr<CollidableObj>> altars;
+std::vector<std::unique_ptr<Altar>> GameMap::gen_altars() {
+  std::vector<std::unique_ptr<Altar>> altars;
 
   for (int y = 0; y < internal_map[0].size(); y++) {
     for (int x = 0; x < internal_map[0][0].size(); x++) {
       switch (internal_map[0][y][x]) {
       case MapObject::START_BLUE_ALTAR:
-        altars.push_back(std::make_unique<Altar>(x, y, START, BLUE_ALTAR));
-        altars.push_back(std::make_unique<Skull>(x, y, BLUE_SKULL));
+        altars.push_back(std::make_unique<Altar>(x, y, ALTAR_START, BLUE));
         break;
       case MapObject::END_BLUE_ALTAR:
-        altars.push_back(std::make_unique<Altar>(x, y, END, BLUE_ALTAR));
+        altars.push_back(std::make_unique<Altar>(x, y, ALTAR_END, BLUE));
         break;
       case MapObject::START_RED_ALTAR:
-        altars.push_back(std::make_unique<Altar>(x, y, START, RED_ALTAR));
-        altars.push_back(std::make_unique<Skull>(x, y, RED_SKULL));
+        altars.push_back(std::make_unique<Altar>(x, y, ALTAR_START, RED));
         break;
       case MapObject::END_RED_ALTAR:
-        altars.push_back(std::make_unique<Altar>(x, y, END, RED_ALTAR));
+        altars.push_back(std::make_unique<Altar>(x, y, ALTAR_END, RED));
         break;
       default:
         break;
@@ -114,6 +107,28 @@ std::vector<std::unique_ptr<CollidableObj>> GameMap::gen_altars() {
 
   std::cout << "Altars size: " << altars.size() << std::endl;
   return altars;
+}
+
+std::vector<std::unique_ptr<Skull>> GameMap::gen_skulls() {
+  std::vector<std::unique_ptr<Skull>> skulls;
+
+  for (int y = 0; y < internal_map[0].size(); y++) {
+    for (int x = 0; x < internal_map[0][0].size(); x++) {
+      switch (internal_map[0][y][x]) {
+      case MapObject::START_BLUE_ALTAR:
+        skulls.push_back(std::make_unique<Skull>(x, y, BLUE));
+        break;
+      case MapObject::START_RED_ALTAR:
+        skulls.push_back(std::make_unique<Skull>(x, y, RED));
+        break;
+      default:
+        break;
+      }
+    }
+  }
+
+  std::cout << "Skulls size: " << skulls.size() << std::endl;
+  return skulls;
 }
 
 std::unique_ptr<Exit> GameMap::gen_exit() {
