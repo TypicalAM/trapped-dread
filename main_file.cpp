@@ -95,7 +95,7 @@ bool can_place_skull() {
     if (altar->get_color() == skull->get_color()) {
       GameObjects.push_back(std::move(heldGameObjects[0]));
       GameObjects.back()->set_pos(
-          glm::vec3(altar_pos.x, SKULL_OFFSET_Y, altar_pos.y));
+          glm::vec3(altar_pos.x, SKULL_OFFSET_Y, altar_pos.z));
       heldGameObjects.erase(heldGameObjects.begin());
       return true;
     }
@@ -109,7 +109,7 @@ bool can_place_skull() {
                                   : camera_ptr->place_red_skull();
       GameObjects.push_back(std::move(heldGameObjects[1]));
       GameObjects.back()->set_pos(
-          glm::vec3(altar_pos.x, SKULL_OFFSET_Y, altar_pos.y));
+          glm::vec3(altar_pos.x, SKULL_OFFSET_Y, altar_pos.z));
       heldGameObjects.erase(heldGameObjects.begin() + 1);
       return true;
     }
