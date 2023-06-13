@@ -34,3 +34,14 @@ Note: Make sure you have the necessary dependencies installed on your system, in
 ## Acknowledgments
 
 This project was inspired by the game ULTRAKILL, developed by Arsi "Hakita" Patala. The original game can be found at [https://store.steampowered.com/app/1229490/ULTRAKILL/](https://store.steampowered.com/app/1229490/ULTRAKILL/).
+
+## Images
+
+An image of the map:
+
+<p align="center">
+    <a href="#">
+        <img width="400" src="assets/repo/image.png" />
+    </a>
+</p>
+
