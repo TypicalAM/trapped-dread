@@ -18,8 +18,16 @@ To run the game on your machine, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/TypicalAM/trapped-dread`
 2. Navigate to the project directory: `cd trapped-dread`
-3. Compile the source code using a C++ compiler that supports OpenGL (e.g., g++), run make: `make`
-4. Run the compiled executable: `./game`
+3. Create a build directory and enter it: `mkdir build && cd build`
+4. Compile using `cmake`: `cmake .. && make -j4`
+4. Run the compiled executable with one of the maps:
+
+```bash
+cd ..
+./game ultrakill
+./game example
+./game parkour
+```
 
 Note: Make sure you have the necessary dependencies installed on your system, including OpenGL.
 
@@ -31,10 +39,6 @@ Note: Make sure you have the necessary dependencies installed on your system, in
 - Strafe right: D
 - Jump: Spacebar
 
-## Acknowledgments
-
-This project was inspired by the game ULTRAKILL, developed by Arsi "Hakita" Patala. The original game can be found at [https://store.steampowered.com/app/1229490/ULTRAKILL/](https://store.steampowered.com/app/1229490/ULTRAKILL/).
-
 ## Images
 
 An image of the map:
@@ -44,4 +48,9 @@ An image of the map:
         <img width="400" src="assets/repo/image.png" />
     </a>
 </p>
+
+## Acknowledgments
+
+This project was inspired by the game ULTRAKILL, developed by Arsi "Hakita" Patala. The original game can be found at [https://store.steampowered.com/app/1229490/ULTRAKILL/](https://store.steampowered.com/app/1229490/ULTRAKILL/).
+
 
